@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base target="_top">
+  <style>
+    body { 
+      font-family: Arial, sans-serif; 
+      margin: 20px; 
+      background: #f5f5f5; 
+    }
+    .header { 
+      background: white; 
+      padding: 20px; 
+      border-radius: 8px; 
+      margin-bottom: 20px; 
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1); 
+    }
+    .main-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    .company-section { 
+      background: white; 
+      padding: 20px; 
+      border-radius: 8px; 
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1); 
+    }
+    .company-header { 
+      font-size: 20px; 
+      font-weight: bold; 
+      margin-bottom: 15px; 
+      padding: 10px; 
+      border-radius: 6px; 
+      color: white; 
+    }
+    .sos-header { background: #007bff; }
+    .dle-header { background: #28a745; }
+    .process-table { 
+      width: 100%; 
+      border-collapse: collapse; 
+      margin-top: 15px; 
+    }
+    .process-table th, .process-table td { 
+      padding: 8px; 
+      text-align: left; 
+      border-bottom: 1px solid #ddd; 
+    }
+    .process-table th { 
+      background: #f8f9fa; 
+      font-weight: bold; 
+    }
+    .highlight-row { 
+      background: #e9ecef; 
+      font-weight: bold; 
+    }
+    .process-table tr {
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+    .process-table tr:hover {
+      background-color: #f8f9fa;
+    }
+    .process-table tr:active {
+      background-color: #e9ecef;
+    }
+    .sub-status {
+      color: #666;
+      font-style: italic;
+    }
+    .kpi-section {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .kpi-header {
+      background: #6c757d;
+      color: white;
+      padding: 10px;
+      border-radius: 6px;
+      margin-bottom: 15px;
+      font-weight: bold;
+    }
+    .kpi-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid #eee;
+    }
+    .kpi-label {
+      font-weight: bold;
+      color: #333;
+    }
+    .kpi-value {
+      font-size: 18px;
+      font-weight: bold;
+      color: #007bff;
+    }
+    .kpi-formula {
+      font-size: 12px;
+      color: #666;
+      font-style: italic;
+      margin-top: 5px;
+    }
+    .loading { 
+      text-align: center; 
+      padding: 40px; 
+      color: #666; 
+    }
+    .error { 
+      background: #f8d7da; 
+      color: #721c24; 
+      padding: 15px; 
+      border-radius: 6px; 
+      margin: 20px 0; 
+    }
+    .refresh-btn { 
+      background: #007bff; 
+      color: white; 
+      border: none; 
+      padding: 10px 20px; 
+      border-radius: 6px; 
+      cursor: pointer; 
+      font-size: 16px; 
+    }
+    .refresh-btn:hover { 
+      background: #0056b3; 
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>📊 Simple KPI Dashboard 2024-2025</h1>
+    <button class="refresh-btn" onclick="loadData()">🔄 Refresh Data</button>
+  </div>
+
+  <div id="loading" class="loading">
+    Loading dashboard data... Please wait.
+  </div>
+
+  <div id="content" style="display:none;">
+    <div class="main-container">
+      <!-- SOS Section -->
+      <div class="company-section">
+        <div class="company-header sos-header">🏢 SOS Projects</div>
+        <table class="process-table">
+          <thead>
+            <tr>
+              <th>PROCESS</th>
+              <th>COUNT</th>
+            </tr>
+          </thead>
+          <tbody id="sos-table-body"></tbody>
+        </table>
+      </div>
+
+      <!-- DLE Section -->
+      <div class="company-section">
+        <div class="company-header dle-header">🏭 DLE Projects</div>
+        <table class="process-table">
+          <thead>
+            <tr>
+              <th>PROCESS</th>
+              <th>COUNT</th>
+            </tr>
+          </thead>
+          <tbody id="dle-table-body"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- KPI Section -->
+    <div class="kpi-section">
+      <div class="kpi-header">📊 KPI Summary</div>
+      <div class="kpi-row">
+        <div>
+          <div class="kpi-label">SOS - Offer conversion rate</div>
+          <div class="kpi-formula">Formula: Awarded Projects / (Total - Not Quoted)</div>
+        </div>
+        <div class="kpi-value" id="sos-conversion-rate">—</div>
+      </div>
+      <div class="kpi-row">
+        <div>
+          <div class="kpi-label">SOS - Conversion of offers sent</div>
+          <div class="kpi-formula">Formula: (Offer submitted + Awarded) / (Total - Not Quoted)</div>
+        </div>
+        <div class="kpi-value" id="sos-offers-conversion">—</div>
+      </div>
+      <div class="kpi-row">
+        <div>
+          <div class="kpi-label">DLE - Offer conversion rate</div>
+          <div class="kpi-formula">Formula: Awarded Projects / (Total - Not Quoted)</div>
+        </div>
+        <div class="kpi-value" id="dle-conversion-rate">—</div>
+      </div>
+      <div class="kpi-row">
+        <div>
+          <div class="kpi-label">DLE - Conversion of offers sent</div>
+          <div class="kpi-formula">Formula: (Offer submitted + Awarded) / (Total - Not Quoted)</div>
+        </div>
+        <div class="kpi-value" id="dle-offers-conversion">—</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // --- Temporary Ready-To-Quote (RTQ) sub-status overrides (Dashboard-only) ---
+    const RTQ_SUBSTATUS_CATEGORIES = [
+      'Ready to quote',
+      'Creating Technical proposal',
+      'Technical proposal pending to approval',
+      'Creating Estimation Cost',
+      'Estimation pending to approval',
+      'Proposals ready to Submit'
+    ];
+
+    function rtqOverridesKey(company) {
+      // Year is fixed to 2025 in this dashboard; namespace by company
+      return `rtq_overrides_2025_${company}`;
+    }
+    function loadRTQOverrides(company) {
+      try {
+        return JSON.parse(localStorage.getItem(rtqOverridesKey(company)) || '{}');
+      } catch (e) { return {}; }
+    }
+    function saveRTQOverride(company, projectNo, newSubStatus) {
+      const key = rtqOverridesKey(company);
+      const data = loadRTQOverrides(company);
+      if (newSubStatus) data[String(projectNo)] = newSubStatus; else delete data[String(projectNo)];
+      localStorage.setItem(key, JSON.stringify(data));
+    }
+    function applyOverridesToSubStatuses(company, subStatuses) {
+      const overrides = loadRTQOverrides(company);
+      const targetCats = new Set(RTQ_SUBSTATUS_CATEGORIES);
+      const findAndRemove = (no) => {
+        for (const cat of RTQ_SUBSTATUS_CATEGORIES) {
+          const arr = subStatuses[cat] || [];
+          const idx = arr.findIndex(p => String(p.no) === String(no));
+          if (idx !== -1) { arr.splice(idx, 1); return true; }
+        }
+        return false;
+      };
+      Object.entries(overrides).forEach(([no, cat]) => {
+        if (!targetCats.has(cat)) return; // ignore invalid
+        // remove from any current bucket, then add to target bucket
+        findAndRemove(no);
+        if (!subStatuses[cat]) subStatuses[cat] = [];
+        // inject lightweight placeholder; real project details are not needed for grouping view here
+        subStatuses[cat].push({ no: no, client: '', subject: '', status: cat });
+      });
+      return subStatuses;
+    }
+
+    function loadData() {
+      document.getElementById('loading').style.display = 'block';
+      document.getElementById('content').style.display = 'none';
+      
+      google.script.run
+        .withSuccessHandler(function(data) {
+          document.getElementById('loading').style.display = 'none';
+          document.getElementById('content').style.display = 'block';
+          
+          if (data.error) {
+            showError(data.error);
+            return;
+          }
+          
+          displayData(data);
+          // After initial render, reflect local RTQ overrides in counts
+          refreshRTQCounts('SOS');
+          refreshRTQCounts('DLE');
+        })
+        .withFailureHandler(function(error) {
+          document.getElementById('loading').style.display = 'none';
+          showError('Failed to load data: ' + error.message);
+        })
+        .getKPIDashboardData(2025);
+    }
+    
+    function displayData(data) {
+      const sos = data.companies.SOS;
+      const dle = data.companies.DLE;
+      
+      // Display SOS data
+      if (sos) {
+        displayCompanyTable('sos-table-body', sos, 'SOS');
+        
+        // Calculate KPIs
+        const sosConversionRate = calculateConversionRate(sos);
+        const sosOffersConversion = calculateOffersConversion(sos);
+        
+        document.getElementById('sos-conversion-rate').textContent = sosConversionRate + '%';
+        document.getElementById('sos-offers-conversion').textContent = sosOffersConversion + '%';
+      }
+      
+      // Display DLE data
+      if (dle) {
+        displayCompanyTable('dle-table-body', dle, 'DLE');
+        
+        // Calculate KPIs
+        const dleConversionRate = calculateConversionRate(dle);
+        const dleOffersConversion = calculateOffersConversion(dle);
+        
+        document.getElementById('dle-conversion-rate').textContent = dleConversionRate + '%';
+        document.getElementById('dle-offers-conversion').textContent = dleOffersConversion + '%';
+      }
+    }
+    
+    function displayCompanyTable(containerId, companyData, company) {
+      const container = document.getElementById(containerId);
+      let tableHTML = '';
+      
+      // RFQ Process
+      tableHTML += `
+        <tr onclick="showProjectsByCategory('${company}', 'RFQ Pending to create')"><td>RFQ Pending to create</td><td>${companyData.rfq_pending_create || 0}</td></tr>
+        <tr onclick="showProjectsByCategory('${company}', 'RFQ Pending to send')"><td>RFQ Pending to send</td><td>${companyData.rfq_pending_send || 0}</td></tr>
+        <tr onclick="showProjectsByCategory('${company}', 'Waiting to receive the quotation')"><td>Waiting to receive the quotation</td><td>${companyData.waiting_for_quotation || 0}</td></tr>
+      `;
+      
+      // Proposal Process
+      tableHTML += `
+        <tr class="highlight-row" onclick="showProjectsByCategory('${company}', 'Ready to quote')"><td>📋 Ready to quote (Click to see sub-statuses)</td><td><span id="${company.toLowerCase()}-rtq-total">${companyData.ready_to_quote || 0}</span></td></tr>
+        <tr onclick="showProjectsByCategory('${company}', 'Creating Technical proposal')"><td>  ↳ Creating Technical proposal</td><td><span id="${company.toLowerCase()}-rtq-creating-technical">${companyData.creating_technical_proposal || 0}</span></td></tr>
+        <tr onclick="showProjectsByCategory('${company}', 'Technical proposal pending to approval')"><td>  ↳ Technical proposal pending to approval</td><td><span id="${company.toLowerCase()}-rtq-proposal-pending">${companyData.technical_proposal_pending || 0}</span></td></tr>
+        <tr onclick="showProjectsByCategory('${company}', 'Creating Estimation Cost')"><td>  ↳ Creating Estimation Cost</td><td><span id="${company.toLowerCase()}-rtq-creating-estimation">${companyData.creating_estimation || 0}</span></td></tr>
+        <tr onclick="showProjectsByCategory('${company}', 'Estimation pending to approval')"><td>  ↳ Estimation pending to approval</td><td><span id="${company.toLowerCase()}-rtq-estimation-pending">${companyData.estimation_pending || 0}</span></td></tr>
+        <tr onclick="showProjectsByCategory('${company}', 'Proposals ready to Submit')"><td>  ↳ Proposals ready to Submit</td><td><span id="${company.toLowerCase()}-rtq-proposals-ready">${companyData.proposals_ready || 0}</span></td></tr>
+        <tr class="highlight-row" onclick="showProjectsByCategory('${company}', 'Offer submitted')"><td>Offer submitted</td><td>${companyData.offer_submitted || 0}</td></tr>
+      `;
+      
+      // Project Not Quoted
+      tableHTML += `
+        <tr onclick="showProjectsByCategory('${company}', 'Technical Query')"><td>Technical Query</td><td>${companyData.technical_query || 0}</td></tr>
+        <tr onclick="showProjectsByCategory('${company}', 'Technical Review')"><td>Technical Review</td><td>${companyData.technical_review || 0}</td></tr>
+        <tr onclick="showProjectsByCategory('${company}', 'Restriction from supplier')"><td>Restriction from supplier</td><td>${companyData.restriction_from_supplier || 0}</td></tr>
+        <tr onclick="showProjectsByCategory('${company}', 'No proposal - Technical reasons')"><td>No proposal - Technical reasons</td><td>${companyData.no_proposal_tech || 0}</td></tr>
+        <tr onclick="showProjectsByCategory('${company}', 'No proposal - Commercial reasons')"><td>No proposal - Commercial reasons</td><td>${companyData.no_proposal_com || 0}</td></tr>
+        <tr onclick="showProjectsByCategory('${company}', 'Waiting for offer by Libya')"><td>Waiting for offer by Libya</td><td>${companyData.waiting_libya || 0}</td></tr>
+        <tr onclick="showProjectsByCategory('${company}', 'Waiting for offer by USA')"><td>Waiting for offer by USA</td><td>${companyData.waiting_usa || 0}</td></tr>
+        <tr onclick="showProjectsByCategory('${company}', 'on Hold WFMD')"><td>on Hold WFMD</td><td>${companyData.on_hold || 0}</td></tr>
+        <tr onclick="showProjectsByCategory('${company}', 'Canceled by the client')"><td>Canceled by the client</td><td>${companyData.canceled_by_client || 0}</td></tr>
+      `;
+      
+      // Summary
+      tableHTML += `
+        <tr class="highlight-row" onclick="showProjectsByCategory('${company}', 'Awarded')"><td>⭐ Awarded Projects</td><td>${companyData.awarded || 0}</td></tr>
+        <tr class="highlight-row"><td>Total Projects</td><td>${companyData.total || 0}</td></tr>
+        <tr class="highlight-row"><td>Projects Not Quoted</td><td>${companyData.projects_not_quoted || 0}</td></tr>
+      `;
+      
+      container.innerHTML = tableHTML;
+    }
+
+    function refreshRTQCounts(company) {
+      // Fetch fresh sub-status lists, apply overrides, then update table counts
+      google.script.run
+        .withSuccessHandler(function(data) {
+          if (!data || !data.subStatuses) return;
+          const adjusted = applyOverridesToSubStatuses(company, data.subStatuses);
+          const sum = (arr) => (arr && Array.isArray(arr)) ? arr.length : 0;
+          const counts = {
+            total: sum(adjusted['Ready to quote']) + sum(adjusted['Creating Technical proposal']) + sum(adjusted['Technical proposal pending to approval']) + sum(adjusted['Creating Estimation Cost']) + sum(adjusted['Estimation pending to approval']) + sum(adjusted['Proposals ready to Submit']),
+            creating_technical_proposal: sum(adjusted['Creating Technical proposal']),
+            technical_proposal_pending: sum(adjusted['Technical proposal pending to approval']),
+            creating_estimation: sum(adjusted['Creating Estimation Cost']),
+            estimation_pending: sum(adjusted['Estimation pending to approval']),
+            proposals_ready: sum(adjusted['Proposals ready to Submit'])
+          };
+          const p = company.toLowerCase();
+          const setText = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = String(val); };
+          setText(`${p}-rtq-total`, counts.total);
+          setText(`${p}-rtq-creating-technical`, counts.creating_technical_proposal);
+          setText(`${p}-rtq-proposal-pending`, counts.technical_proposal_pending);
+          setText(`${p}-rtq-creating-estimation`, counts.creating_estimation);
+          setText(`${p}-rtq-estimation-pending`, counts.estimation_pending);
+          setText(`${p}-rtq-proposals-ready`, counts.proposals_ready);
+        })
+        .withFailureHandler(function(){ /* ignore */ })
+        .getReadyToQuoteSubStatuses(company, 2025);
+    }
+    
+    function showProjectsByCategory(company, statusName) {
+      // Special handling for Ready to Quote sub-statuses
+      if (statusName === 'Ready to quote') {
+        google.script.run
+          .withSuccessHandler(function(data) {
+            if (data.subStatuses) {
+              // Apply local overrides before rendering
+              const adjusted = applyOverridesToSubStatuses(company, data.subStatuses);
+              showReadyToQuoteEditor(company, adjusted);
+            } else {
+              alert(`No Ready to Quote projects found in ${company}`);
+            }
+          })
+          .withFailureHandler(function(error) {
+            alert('Error loading Ready to Quote projects: ' + error.message);
+          })
+          .getReadyToQuoteSubStatuses(company, 2025);
+      } else {
+        // Regular status handling
+        google.script.run
+          .withSuccessHandler(function(data) {
+            if (data.projects && data.projects.length > 0) {
+              let message = `${company} - ${statusName}\n\n`;
+              data.projects.forEach(project => {
+                const yearLabel = project.year ? ` (${project.year})` : '';
+                message += `• ${project.no}${yearLabel}: ${project.subject} (${project.client})\n`;
+              });
+              alert(message);
+            } else {
+              alert(`No projects found for ${statusName} in ${company}`);
+            }
+          })
+          .withFailureHandler(function(error) {
+            alert('Error loading projects: ' + error.message);
+          })
+          .getProjectsByStatusSimple(company, statusName, 2025);
+      }
+    }
+    
+    function showReadyToQuoteEditor(company, subStatuses) {
+      // Create modal overlay
+      const overlay = document.createElement('div');
+      overlay.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.5);
+        z-index: 1000;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      `;
+
+      // Create modal content
+      const modal = document.createElement('div');
+      modal.style.cssText = `
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        max-width: 800px;
+        max-height: 80vh;
+        overflow-y: auto;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+      `;
+
+      let html = `
+        <h2>📋 ${company} - Ready to Quote Sub-Statuses</h2>
+        <p>Click on a project to change its status:</p>
+        <div style="margin-bottom: 20px;">
+      `;
+
+      // Define the sub-status categories in order
+      const subStatusCategories = RTQ_SUBSTATUS_CATEGORIES;
+
+      let totalProjects = 0;
+
+      // Show projects grouped by sub-status
+      subStatusCategories.forEach(category => {
+        const projects = subStatuses[category] || [];
+        if (projects.length > 0) {
+          totalProjects += projects.length;
+          html += `<h3 style="color: #007bff; border-bottom: 2px solid #007bff; padding-bottom: 5px;">${category} (${projects.length})</h3>`;
+          projects.forEach(project => {
+            html += `
+              <div style="padding: 8px; border: 1px solid #ddd; margin: 3px 0; border-radius: 4px; cursor: pointer; background: #f8f9fa;"
+                   onclick="showStatusSelector('${company}', '${project.no}', '${(project.subject||'').replace(/'/g, "\\'")}', '${(project.client||'').replace(/'/g, "\\'")}')">
+                <strong>${project.no}</strong>: ${project.subject} (${project.client})
+              </div>
+            `;
+          });
+        }
+      });
+
+      // If no projects found
+      if (totalProjects === 0) {
+        html += `<p style="color: #666; font-style: italic;">No projects found in Ready to Quote status categories.</p>`;
+      } else {
+        html += `<p style="margin-top: 15px; color: #666; font-size: 14px;"><strong>Total Projects:</strong> ${totalProjects}</p>`;
+      }
+
+      html += `
+        </div>
+        <button onclick="this.closest('.modal-overlay').remove()"
+                style="background: #6c757d; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer;">
+          Close
+        </button>
+      `;
+
+      modal.innerHTML = html;
+      overlay.className = 'modal-overlay';
+      overlay.appendChild(modal);
+      document.body.appendChild(overlay);
+    }
+    
+    function showStatusSelector(company, projectNo, subject, client) {
+      // Only allow RTQ sub-statuses locally (no spreadsheet write)
+      createStatusModal(company, projectNo, subject, client, RTQ_SUBSTATUS_CATEGORIES);
+    }
+    
+    function createStatusModal(company, projectNo, subject, client, availableStatuses) {
+      // Create modal for status selection
+      const overlay = document.createElement('div');
+      overlay.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.5);
+        z-index: 1001;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      `;
+      
+      const modal = document.createElement('div');
+      modal.style.cssText = `
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        max-width: 500px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+      `;
+      
+      let options = availableStatuses.map(status => `<option value="${status}">${status}</option>`).join('');
+      
+      modal.innerHTML = `
+        <h3>📝 Change Project Status</h3>
+        <p><strong>Project:</strong> ${projectNo}</p>
+        <p><strong>Subject:</strong> ${subject}</p>
+        <p><strong>Client:</strong> ${client}</p>
+        <br>
+        <label for="statusSelect"><strong>Select New Status:</strong></label>
+        <select id="statusSelect" style="width: 100%; padding: 8px; margin: 10px 0; border: 1px solid #ddd; border-radius: 4px;">
+          ${options}
+        </select>
+        <br>
+        <div style="text-align: right; margin-top: 20px;">
+          <button onclick="this.closest('.modal-overlay').remove()" 
+                  style="background: #6c757d; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; margin-right: 10px;">
+            Cancel
+          </button>
+          <button onclick="updateProjectStatus('${company}', '${projectNo}', document.getElementById('statusSelect').value)" 
+                  style="background: #007bff; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer;">
+            Update Status
+          </button>
+        </div>
+      `;
+      
+      modal.className = 'status-modal';
+      overlay.className = 'modal-overlay';
+      overlay.appendChild(modal);
+      document.body.appendChild(overlay);
+    }
+    
+    function updateProjectStatus(company, projectNo, newStatus) {
+      // Dashboard-only: save a temporary override locally and refresh the RTQ editor
+      saveRTQOverride(company, projectNo, newStatus);
+      // Close overlay
+      var ov = document.querySelector('.modal-overlay');
+      if (ov) ov.remove();
+      // Re-open editor with updated overrides applied
+      google.script.run
+        .withSuccessHandler(function(data) {
+          if (data.subStatuses) {
+            const adjusted = applyOverridesToSubStatuses(company, data.subStatuses);
+            showReadyToQuoteEditor(company, adjusted);
+          }
+        })
+        .getReadyToQuoteSubStatuses(company, 2025);
+      // Inform user this is local only
+      setTimeout(function(){ alert('✅ Status saved locally for this dashboard view. No changes were made to the spreadsheet.'); }, 50);
+      // Also refresh the visible RTQ counters in the main table
+      refreshRTQCounts(company);
+    }
+    
+    function calculateConversionRate(companyData) {
+      const awarded = companyData.awarded || 0;
+      const total = companyData.total || 0;
+      const notQuoted = companyData.projects_not_quoted || 0;
+      
+      if (total - notQuoted <= 0) return 0;
+      return ((awarded / (total - notQuoted)) * 100).toFixed(1);
+    }
+    
+    function calculateOffersConversion(companyData) {
+      const awarded = companyData.awarded || 0;
+      const offerSubmitted = companyData.offer_submitted || 0;
+      const total = companyData.total || 0;
+      const notQuoted = companyData.projects_not_quoted || 0;
+      
+      if (total - notQuoted <= 0) return 0;
+      return (((offerSubmitted + awarded) / (total - notQuoted)) * 100).toFixed(1);
+    }
+    
+    function showError(message) {
+      document.getElementById('content').innerHTML = `
+        <div class="error">
+          <strong>Error:</strong> ${message}
+        </div>
+      `;
+      document.getElementById('content').style.display = 'block';
+    }
+    
+    // Load data when page loads
+    window.onload = function() {
+      loadData();
+    };
+  </script>
+</body>
+</html>

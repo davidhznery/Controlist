@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base target="_top">
+  <style>
+    body { font-family: Arial, sans-serif; padding: 12px; }
+    label { display:block; margin-top:8px; font-size: 12px; }
+    input, select { width:100%; padding:6px; box-sizing: border-box; }
+    .row { display:flex; gap:8px; }
+    .row > div { flex:1; }
+    button { margin-top:12px; width:100%; padding:10px; }
+    small { color:#666; }
+    .other { display:none; margin-top:4px; }
+
+    /* Overlay de carga */
+    #loadingOverlay {
+      position: fixed; inset: 0;
+      background: rgba(255,255,255,0.8);
+      display: none; align-items: center; justify-content: center;
+      z-index: 9999;
+    }
+    .spinner { width: 52px; height: 52px; border: 5px solid #ccc; border-top-color: #333; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    #loadingOverlay .box { text-align: center; }
+    #loadingOverlay .msg { margin-top: 12px; font-size: 14px; color: #333; }
+  </style>
+  <script>
+    function byId(id){ return document.getElementById(id); }
+
+    function setOptions(selectId, arr, withOther=true) {
+      const sel = byId(selectId);
+      sel.innerHTML = "";
+      (arr || []).forEach(v => {
+        const opt = document.createElement("option");
+        opt.value = v; opt.textContent = v;
+        sel.appendChild(opt);
+      });
+      if (withOther) {
+        const opt = document.createElement("option");
+        opt.value = "__OTHER__"; opt.textContent = "Other…";
+        sel.appendChild(opt);
+      }
+    }
+    function toggleOther(selectId, otherBlockId) {
+      const val = byId(selectId).value;
+      byId(otherBlockId).style.display = (val === "__OTHER__") ? "block" : "none";
+    }
+
+    function loadDefaults() {
+      const company = byId('company').value;
+      google.script.run.withSuccessHandler(function(d){
+        byId('no').value = d.nextNo || "";
+        setOptions('client', d.clients || []);
+        setOptions('leader', d.leaders || []);
+        setOptions('status', d.statuses || []);
+        ['clientOtherBlock','leaderOtherBlock','statusOtherBlock'].forEach(id => byId(id).style.display = 'none');
+      }).getFormDefaults(company);
+    }
+    function toggleDivision() {
+      const show = byId('company').value === 'DLE';
+      byId('divBlock').style.display = show ? 'block' : 'none';
+    }
+    function onCompanyChange() {
+      toggleDivision();
+      loadDefaults();
+    }
+
+    function setLoading(on) {
+      byId('loadingOverlay').style.display = on ? 'flex' : 'none';
+      byId('createBtn').disabled = !!on;
+    }
+
+    function submitForm() {
+      const f = {
+        company: byId('company').value,
+        division: byId('division').value,
+        no: byId('no').value.trim(),
+        client: byId('client').value,
+        clientOther: byId('clientOther').value.trim(),
+        subject: byId('subject').value.trim(),
+        receivedISO: byId('received').value,
+        deadlineISO: byId('deadline').value,
+        leader: byId('leader').value,
+        leaderOther: byId('leaderOther').value.trim(),
+        status: byId('status').value,
+        statusOther: byId('statusOther').value.trim()
+      };
+      if (!f.company || !f.no || !f.subject || (!f.client && !f.clientOther)) {
+        alert('Company, No., Client y Subject son obligatorios.');
+        return;
+      }
+
+      setLoading(true);
+      google.script.run.withSuccessHandler(function(res){
+        setLoading(false);
+        alert('Proyecto creado. Abre la carpeta:\n' + res.url);
+      }).withFailureHandler(function(err){
+        setLoading(false);
+        alert('Error: ' + (err && err.message ? err.message : err));
+      }).createProjectFromForm(f);
+    }
+
+    window.onload = function(){
+      toggleDivision();
+      loadDefaults();
+    };
+  </script>
+</head>
+<body>
+  <h3>New Project</h3>
+
+  <label>Company</label>
+  <select id="company" onchange="onCompanyChange()">
+    <option value="SOS">SOS</option>
+    <option value="DLE">DLE</option>
+  </select>
+
+  <div id="divBlock" style="display:none">
+    <label>Division (solo DLE)</label>
+    <select id="division">
+      <option>Procurement</option>
+      <option>Trading</option>
+      <option>ChampionX</option>
+    </select>
+  </div>
+
+  <div class="row">
+    <div>
+      <label>No. (auto)</label>
+      <input id="no" placeholder="001-25">
+    </div>
+    <div>
+      <label>Received</label>
+      <input id="received" type="date">
+    </div>
+    <div>
+      <label>Deadline</label>
+      <input id="deadline" type="date">
+    </div>
+  </div>
+
+  <label>Client</label>
+  <select id="client" onchange="toggleOther('client','clientOtherBlock')"></select>
+  <div id="clientOtherBlock" class="other">
+    <input id="clientOther" placeholder="New client name">
+  </div>
+
+  <label>Subject</label>
+  <input id="subject" placeholder="Short description">
+
+  <label>Leader</label>
+  <select id="leader" onchange="toggleOther('leader','leaderOtherBlock')"></select>
+  <div id="leaderOtherBlock" class="other">
+    <input id="leaderOther" placeholder="New leader name">
+  </div>
+
+  <label>Status</label>
+  <select id="status" onchange="toggleOther('status','statusOtherBlock')"></select>
+  <div id="statusOtherBlock" class="other">
+    <input id="statusOther" placeholder="New status">
+  </div>
+
+  <!-- Sin RFQ/Upload -->
+
+  <button id="createBtn" onclick="submitForm()">Create Project</button>
+
+  <!-- Overlay de carga -->
+  <div id="loadingOverlay">
+    <div class="box">
+      <div class="spinner"></div>
+      <div class="msg">Creando proyecto…</div>
+    </div>
+  </div>
+</body>
+</html>
+

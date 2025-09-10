@@ -1,0 +1,34 @@
+# Google Apps Script
+.clasp.json
+.claspignore
+
+# Node modules (if using clasp)
+node_modules/
+package-lock.json
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+*.tmp
+*.temp
+
+# Environment files
+.env
+.env.local
+.env.production
+
+# Build files
+dist/
+build/
