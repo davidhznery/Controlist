@@ -134,7 +134,7 @@
 </head>
 <body>
   <div class="header">
-    <h1>📊 Simple KPI Dashboard 2024-2025</h1>
+    <h1 id="dashboard-title">📊 Simple KPI Dashboard</h1>
     <button class="refresh-btn" onclick="loadData()">🔄 Refresh Data</button>
   </div>
 
@@ -209,6 +209,20 @@
 
   <script>
     // --- Temporary Ready-To-Quote (RTQ) sub-status overrides (Dashboard-only) ---
+    const DASHBOARD_BASE_YEAR = 2024;
+    const DASHBOARD_YEAR = new Date().getFullYear();
+
+    function getDashboardYearsLabel() {
+      return DASHBOARD_BASE_YEAR === DASHBOARD_YEAR
+        ? String(DASHBOARD_YEAR)
+        : `${DASHBOARD_BASE_YEAR}-${DASHBOARD_YEAR}`;
+    }
+
+    function updateDashboardTitle() {
+      const title = document.getElementById('dashboard-title');
+      if (title) title.textContent = `📊 Simple KPI Dashboard ${getDashboardYearsLabel()}`;
+    }
+
     const RTQ_SUBSTATUS_CATEGORIES = [
       'Ready to quote',
       'Creating Technical proposal',
@@ -219,8 +233,8 @@
     ];
 
     function rtqOverridesKey(company) {
-      // Year is fixed to 2025 in this dashboard; namespace by company
-      return `rtq_overrides_2025_${company}`;
+      // Namespace overrides by company and current dashboard year
+      return `rtq_overrides_${DASHBOARD_YEAR}_${company}`;
     }
     function loadRTQOverrides(company) {
       try {
@@ -278,7 +292,7 @@
           document.getElementById('loading').style.display = 'none';
           showError('Failed to load data: ' + error.message);
         })
-        .getKPIDashboardData(2025);
+        .getKPIDashboardData(DASHBOARD_YEAR);
     }
     
     function displayData(data) {
@@ -380,7 +394,7 @@
           setText(`${p}-rtq-proposals-ready`, counts.proposals_ready);
         })
         .withFailureHandler(function(){ /* ignore */ })
-        .getReadyToQuoteSubStatuses(company, 2025);
+        .getReadyToQuoteSubStatuses(company, DASHBOARD_YEAR);
     }
     
     function showProjectsByCategory(company, statusName) {
@@ -399,7 +413,7 @@
           .withFailureHandler(function(error) {
             alert('Error loading Ready to Quote projects: ' + error.message);
           })
-          .getReadyToQuoteSubStatuses(company, 2025);
+          .getReadyToQuoteSubStatuses(company, DASHBOARD_YEAR);
       } else {
         // Regular status handling
         google.script.run
@@ -418,7 +432,7 @@
           .withFailureHandler(function(error) {
             alert('Error loading projects: ' + error.message);
           })
-          .getProjectsByStatusSimple(company, statusName, 2025);
+          .getProjectsByStatusSimple(company, statusName, DASHBOARD_YEAR);
       }
     }
     
@@ -574,7 +588,7 @@
             showReadyToQuoteEditor(company, adjusted);
           }
         })
-        .getReadyToQuoteSubStatuses(company, 2025);
+        .getReadyToQuoteSubStatuses(company, DASHBOARD_YEAR);
       // Inform user this is local only
       setTimeout(function(){ alert('✅ Status saved locally for this dashboard view. No changes were made to the spreadsheet.'); }, 50);
       // Also refresh the visible RTQ counters in the main table
@@ -611,6 +625,7 @@
     
     // Load data when page loads
     window.onload = function() {
+      updateDashboardTitle();
       loadData();
     };
   </script>

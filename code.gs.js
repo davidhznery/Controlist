@@ -719,6 +719,16 @@ const STATUS_GROUPS_NORM = (function(){
 
 // Fast year detection with regex compilation
 const YEAR_REGEX = /-(\d{2})\b/;
+const DASHBOARD_BASE_YEAR = 2024;
+
+function _getDashboardYears_(requestedYear) {
+  const currentYear = new Date().getFullYear();
+  const endYear = Math.max(DASHBOARD_BASE_YEAR, requestedYear || currentYear);
+  const years = [];
+  for (let y = DASHBOARD_BASE_YEAR; y <= endYear; y++) years.push(y);
+  return years;
+}
+
 function _noIsYear_(noValue, year){
   if (!noValue) return false;
   const m = String(noValue).match(YEAR_REGEX);
@@ -971,7 +981,7 @@ function _setCachedData_(cacheKey, data) {
 
 // Main optimized KPI function - now supports multiple years
 function getKPIDashboardData(year) {
-  year = year || 2025;
+  year = year || new Date().getFullYear();
 
   // Check cache first
   const cacheKey = `kpi_dashboard_${year}`;
@@ -1003,7 +1013,7 @@ function getKPIDashboardData(year) {
       const values = sh.getRange(2, 1, last-1, sh.getLastColumn()).getValues();
       
       // Process data efficiently - now includes both 2024 and 2025
-      const comp = _processBatchDataMultiYear_(values, map, [2024, 2025]);
+      const comp = _processBatchDataMultiYear_(values, map, _getDashboardYears_(year));
     out.companies[company] = comp;
   });
 
@@ -1023,7 +1033,7 @@ function getKPIDashboardData(year) {
 
 // Fast monthly trends with minimal processing
 function getMonthlyTrendData(year) {
-  year = year || 2025;
+  year = year || new Date().getFullYear();
   
   const cacheKey = `monthly_trends_${year}`;
   const cached = _getCachedData_(cacheKey);
@@ -1066,7 +1076,7 @@ function getMonthlyTrendData(year) {
 
 // Fast client stats
 function getClientStats(year) {
-  year = year || 2025;
+  year = year || new Date().getFullYear();
   
   const cacheKey = `client_stats_${year}`;
   const cached = _getCachedData_(cacheKey);
@@ -1116,7 +1126,9 @@ function getClientStats(year) {
 function refreshKPIDashboard() {
   try {
     const cache = CacheService.getScriptCache();
-    cache.removeAll(['kpi_dashboard_2025', 'monthly_trends_2025', 'client_stats_2025']);
+    const years = _getDashboardYears_();
+    const cacheKeys = years.flatMap(y => [`kpi_dashboard_${y}`, `monthly_trends_${y}`, `client_stats_${y}`]);
+    cache.removeAll(cacheKeys);
     return { success: true, message: 'Cache cleared successfully' };
   } catch (e) {
     return { success: false, error: e.message };
@@ -1128,7 +1140,7 @@ function refreshKPIDashboard() {
 
 // Simple function to get basic project counts
 function getSimpleDashboardData(year) {
-  year = year || 2025;
+  year = year || new Date().getFullYear();
   
   try {
     const ss = SpreadsheetApp.getActive();
@@ -1394,7 +1406,7 @@ function calculateNotQuotedTotal(kpiData) {
 
 // Function to get projects by status for click functionality - now supports multiple years
 function getProjectsByStatusSimple(company, status, year) {
-  year = year || 2025;
+  year = year || new Date().getFullYear();
   
   try {
     const ss = SpreadsheetApp.getActive();
@@ -1446,7 +1458,7 @@ function getProjectsByStatusSimple(company, status, year) {
       
       // Check if project is from 2024 or 2025
       const projectYear = _getProjectYear_(noVal);
-      const isTargetYear = projectYear === 2024 || projectYear === 2025;
+      const isTargetYear = _getDashboardYears_(year).includes(projectYear);
       
       // For awarded projects, also check with flexible matching
       let isAwarded = false;
@@ -1471,7 +1483,7 @@ function getProjectsByStatusSimple(company, status, year) {
     // Sort by year (2025 first, then 2024) and then by project number
     projects.sort((a, b) => {
       if (a.year !== b.year) {
-        return b.year - a.year; // 2025 first
+        return b.year - a.year; // newest year first
       }
       return a.no.localeCompare(b.no);
     });
@@ -1485,7 +1497,7 @@ function getProjectsByStatusSimple(company, status, year) {
 
 // Function to get Ready to Quote sub-statuses
 function getReadyToQuoteSubStatuses(company, year) {
-  year = year || 2025;
+  year = year || new Date().getFullYear();
 
   try {
     const ss = SpreadsheetApp.getActive();
@@ -1560,7 +1572,7 @@ function getReadyToQuoteSubStatuses(company, year) {
 
 // Function to update project status
 function updateProjectStatus(company, projectNo, newStatus, year) {
-  year = year || 2025;
+  year = year || new Date().getFullYear();
   
   try {
     const ss = SpreadsheetApp.getActive();
@@ -1930,7 +1942,9 @@ function kpiQuickTest() {
 function clearCacheMenu() {
   try {
     const cache = CacheService.getScriptCache();
-    cache.removeAll(['kpi_dashboard_2025', 'monthly_trends_2025', 'client_stats_2025']);
+    const years = _getDashboardYears_();
+    const cacheKeys = years.flatMap(y => [`kpi_dashboard_${y}`, `monthly_trends_${y}`, `client_stats_${y}`]);
+    cache.removeAll(cacheKeys);
     
     // Force refresh by calling the function directly
     const data = getKPIDashboardData(2025);
