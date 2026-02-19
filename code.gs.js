@@ -3,6 +3,7 @@ const SOS_PARENT_FOLDER_ID = "1QluhICfJkNjc6HBMpQbcZEN5dq3zIeW-";
 const DLE_PARENT_FOLDER_ID = "1fc_HIWAJnX9pGTLcDMArp8r2uoC6RjCc";
 
 const DRIVE_LINK_HEADER = "Drive Folder";
+const DASHBOARD_YEAR = 2026;
 
 // (Opcional: ya no usamos Picker, pero puedes dejar esto)
 const PICKER_CONFIG = {
@@ -286,6 +287,11 @@ function getCanonicalFromList_(value, listValues) {
 
   return v;
 }
+function hasCaseInsensitiveValue_(value, listValues) {
+  const v = String(value || "").trim().toLowerCase();
+  if (!v) return false;
+  return (listValues || []).some(item => String(item || "").trim().toLowerCase() === v);
+}
 function getClients_()  { return getListValues_(CLIENTS_SHEET,  CLIENTS_SEED); }
 function getLeaders_()  { return getListValues_(LEADERS_SHEET,  LEADERS_SEED); }
 function getStatuses_() { return getListValues_(STATUSES_SHEET, STATUSES_SEED); }
@@ -562,44 +568,30 @@ function createProjectFromForm(form) {
 
   // Enhanced client validation and normalization
   if (client) {
-    // First, try to find an exact match (case insensitive)
+    // First, try to find an exact/fuzzy canonical match from existing clients
     const clients = getClients_();
     const canonicalClient = getCanonicalFromList_(client, clients);
-
-    if (canonicalClient === client) {
-      // Exact match found, use it
-      client = canonicalClient;
-    } else {
-      // No exact match, add as new client and use as-is
-      client = client.trim();
-      addClient_(client);
-    }
+    const existsAlready = hasCaseInsensitiveValue_(client, clients);
+    client = String(canonicalClient || "").trim();
+    if (!existsAlready) addClient_(client);
   }
 
   // Enhanced leader validation and normalization
   if (leader) {
     const leaders = getLeaders_();
     const canonicalLeader = getCanonicalFromList_(leader, leaders);
-
-    if (canonicalLeader === leader) {
-      leader = canonicalLeader;
-    } else {
-      leader = leader.trim();
-      addLeader_(leader);
-    }
+    const existsAlready = hasCaseInsensitiveValue_(leader, leaders);
+    leader = String(canonicalLeader || "").trim();
+    if (!existsAlready) addLeader_(leader);
   }
 
   // Enhanced status validation and normalization
   if (status) {
     const statuses = getStatuses_();
     const canonicalStatus = getCanonicalFromList_(status, statuses);
-
-    if (canonicalStatus === status) {
-      status = canonicalStatus;
-    } else {
-      status = status.trim();
-      addStatus_(status);
-    }
+    const existsAlready = hasCaseInsensitiveValue_(status, statuses);
+    status = String(canonicalStatus || "").trim();
+    if (!existsAlready) addStatus_(status);
   }
 
   const received = form.receivedISO ? new Date(form.receivedISO) : "";
@@ -671,7 +663,7 @@ function fixInvalidClients() {
 
   SpreadsheetApp.getUi().alert("Clients normalized: " + totalFixed + " cell(s) updated.");
 }
-/************** DASHBOARD KPI 2025 — OPTIMIZED FOR SPEED **************/
+/************** DASHBOARD KPI 2026 — OPTIMIZED FOR SPEED **************/
 
 /* Grupos de estado -> como están en tu hoja */
 const STATUS_GROUPS = {
@@ -951,8 +943,8 @@ function _getCachedData_(cacheKey) {
   try {
     const cache = CacheService.getScriptCache();
     const cached = cache.get(cacheKey);
-    if (cached && cached[0]) {
-      return JSON.parse(cached[0]);
+    if (cached) {
+      return JSON.parse(cached);
     }
   } catch (e) {
     console.log('Cache read error:', e);
@@ -971,7 +963,7 @@ function _setCachedData_(cacheKey, data) {
 
 // Main optimized KPI function - now supports multiple years
 function getKPIDashboardData(year) {
-  year = year || 2025;
+  year = year || DASHBOARD_YEAR;
 
   // Check cache first
   const cacheKey = `kpi_dashboard_${year}`;
@@ -1002,8 +994,8 @@ function getKPIDashboardData(year) {
       // Read data in one batch operation
       const values = sh.getRange(2, 1, last-1, sh.getLastColumn()).getValues();
       
-      // Process data efficiently - now includes both 2024 and 2025
-      const comp = _processBatchDataMultiYear_(values, map, [2024, 2025]);
+      // Process only the requested dashboard year
+      const comp = _processBatchDataMultiYear_(values, map, [year]);
     out.companies[company] = comp;
   });
 
@@ -1023,7 +1015,7 @@ function getKPIDashboardData(year) {
 
 // Fast monthly trends with minimal processing
 function getMonthlyTrendData(year) {
-  year = year || 2025;
+  year = year || DASHBOARD_YEAR;
   
   const cacheKey = `monthly_trends_${year}`;
   const cached = _getCachedData_(cacheKey);
@@ -1066,7 +1058,7 @@ function getMonthlyTrendData(year) {
 
 // Fast client stats
 function getClientStats(year) {
-  year = year || 2025;
+  year = year || DASHBOARD_YEAR;
   
   const cacheKey = `client_stats_${year}`;
   const cached = _getCachedData_(cacheKey);
@@ -1116,7 +1108,11 @@ function getClientStats(year) {
 function refreshKPIDashboard() {
   try {
     const cache = CacheService.getScriptCache();
-    cache.removeAll(['kpi_dashboard_2025', 'monthly_trends_2025', 'client_stats_2025']);
+    cache.removeAll([
+      `kpi_dashboard_${DASHBOARD_YEAR}`,
+      `monthly_trends_${DASHBOARD_YEAR}`,
+      `client_stats_${DASHBOARD_YEAR}`
+    ]);
     return { success: true, message: 'Cache cleared successfully' };
   } catch (e) {
     return { success: false, error: e.message };
@@ -1128,7 +1124,7 @@ function refreshKPIDashboard() {
 
 // Simple function to get basic project counts
 function getSimpleDashboardData(year) {
-  year = year || 2025;
+  year = year || DASHBOARD_YEAR;
   
   try {
     const ss = SpreadsheetApp.getActive();
@@ -1179,7 +1175,7 @@ function getSimpleDashboardData(year) {
 
 // Simple dashboard opener
 function openSimpleDashboard() {
-  const html = HtmlService.createHtmlOutputFromFile('simple-dashboard')
+  const html = HtmlService.createHtmlOutputFromFile('simple-dashboard-2026')
     .setSandboxMode(HtmlService.SandboxMode.IFRAME)
     .setWidth(1200)
     .setHeight(800);
@@ -1189,7 +1185,7 @@ function openSimpleDashboard() {
 // Quick test function
 function simpleQuickTest(){
   const startTime = new Date();
-  const data = getSimpleDashboardData(2025);
+  const data = getSimpleDashboardData(DASHBOARD_YEAR);
   const endTime = new Date();
   const loadTime = Math.round((endTime - startTime) / 1000);
   
@@ -1201,7 +1197,7 @@ function simpleQuickTest(){
   const sos = data.companies.SOS;
   const dle = data.companies.DLE;
   
-  let message = `📊 Simple Dashboard Test Results for 2025:\n\n`;
+  let message = `📊 Simple Dashboard Test Results for ${DASHBOARD_YEAR}:\n\n`;
   message += `⏱️ Load Time: ${loadTime} seconds\n\n`;
   
   message += `🏢 SOS:\n`;
@@ -1394,7 +1390,7 @@ function calculateNotQuotedTotal(kpiData) {
 
 // Function to get projects by status for click functionality - now supports multiple years
 function getProjectsByStatusSimple(company, status, year) {
-  year = year || 2025;
+  year = year || DASHBOARD_YEAR;
   
   try {
     const ss = SpreadsheetApp.getActive();
@@ -1444,9 +1440,9 @@ function getProjectsByStatusSimple(company, status, year) {
       const noVal = noCol[i][0];
       const rowStatus = String(statusCol[i][0] || '').trim();
       
-      // Check if project is from 2024 or 2025
+      // Check if project is from target dashboard year
       const projectYear = _getProjectYear_(noVal);
-      const isTargetYear = projectYear === 2024 || projectYear === 2025;
+      const isTargetYear = projectYear === year;
       
       // For awarded projects, also check with flexible matching
       let isAwarded = false;
@@ -1468,10 +1464,10 @@ function getProjectsByStatusSimple(company, status, year) {
       }
     }
     
-    // Sort by year (2025 first, then 2024) and then by project number
+    // Sort by year (desc) and then by project number
     projects.sort((a, b) => {
       if (a.year !== b.year) {
-        return b.year - a.year; // 2025 first
+        return b.year - a.year;
       }
       return a.no.localeCompare(b.no);
     });
@@ -1485,7 +1481,7 @@ function getProjectsByStatusSimple(company, status, year) {
 
 // Function to get Ready to Quote sub-statuses
 function getReadyToQuoteSubStatuses(company, year) {
-  year = year || 2025;
+  year = year || DASHBOARD_YEAR;
 
   try {
     const ss = SpreadsheetApp.getActive();
@@ -1560,7 +1556,7 @@ function getReadyToQuoteSubStatuses(company, year) {
 
 // Function to update project status
 function updateProjectStatus(company, projectNo, newStatus, year) {
-  year = year || 2025;
+  year = year || DASHBOARD_YEAR;
   
   try {
     const ss = SpreadsheetApp.getActive();
@@ -1732,8 +1728,8 @@ function testAllValidStatuses() {
 // Test the Ready to Quote projects
 function testReadyToQuoteProjects() {
   try {
-    const sosResult = getReadyToQuoteSubStatuses('SOS', 2025);
-    const dleResult = getReadyToQuoteSubStatuses('DLE', 2025);
+    const sosResult = getReadyToQuoteSubStatuses('SOS', DASHBOARD_YEAR);
+    const dleResult = getReadyToQuoteSubStatuses('DLE', DASHBOARD_YEAR);
     
     let message = `🧪 Ready to Quote Projects Test:\n\n`;
     
@@ -1773,8 +1769,8 @@ function testReadyToQuoteProjects() {
 // Test function for Ready to Quote sub-statuses
 function testReadyToQuoteSubStatuses() {
   try {
-    const sosResult = getReadyToQuoteSubStatuses('SOS', 2025);
-    const dleResult = getReadyToQuoteSubStatuses('DLE', 2025);
+    const sosResult = getReadyToQuoteSubStatuses('SOS', DASHBOARD_YEAR);
+    const dleResult = getReadyToQuoteSubStatuses('DLE', DASHBOARD_YEAR);
 
     let message = `🧪 Ready to Quote Sub-Statuses Test:\n\n`;
 
@@ -1826,7 +1822,7 @@ function testReadyToQuoteSubStatuses() {
 // Debug function to test KPI dashboard data
 function debugKPIDashboard() {
   try {
-    const data = getKPIDashboardData(2025);
+    const data = getKPIDashboardData(DASHBOARD_YEAR);
 
     let message = `🔍 KPI Dashboard Debug:\n\n`;
 
@@ -1896,7 +1892,7 @@ function debugAllAwardedProjects() {
 // KPI Test function
 function kpiQuickTest() {
   const startTime = new Date();
-  const data = getKPIDashboardData(2025);
+  const data = getKPIDashboardData(DASHBOARD_YEAR);
   const endTime = new Date();
   const loadTime = Math.round((endTime - startTime) / 1000);
 
@@ -1908,7 +1904,7 @@ function kpiQuickTest() {
   const sos = data.companies.SOS;
   const dle = data.companies.DLE;
 
-  let message = `📊 KPI Dashboard Test Results for 2025:\n\n`;
+  let message = `📊 KPI Dashboard Test Results for ${DASHBOARD_YEAR}:\n\n`;
   message += `⏱️ Load Time: ${loadTime} seconds\n\n`;
 
   message += `🏢 SOS:\n`;
@@ -1930,14 +1926,18 @@ function kpiQuickTest() {
 function clearCacheMenu() {
   try {
     const cache = CacheService.getScriptCache();
-    cache.removeAll(['kpi_dashboard_2025', 'monthly_trends_2025', 'client_stats_2025']);
+    cache.removeAll([
+      `kpi_dashboard_${DASHBOARD_YEAR}`,
+      `monthly_trends_${DASHBOARD_YEAR}`,
+      `client_stats_${DASHBOARD_YEAR}`
+    ]);
     
     // Force refresh by calling the function directly
-    const data = getKPIDashboardData(2025);
+    const data = getKPIDashboardData(DASHBOARD_YEAR);
     const dle = data.companies.DLE;
     
     let message = `✅ Cache cleared successfully!\n\n`;
-    message += `📊 Current DLE Data (2024+2025):\n`;
+    message += `📊 Current DLE Data (${DASHBOARD_YEAR}):\n`;
     message += `  • Total Projects: ${dle.total}\n`;
     message += `  • Awarded Projects: ${dle.awarded}\n`;
     message += `  • Offer Submitted: ${dle.offer_submitted}\n\n`;
@@ -1952,7 +1952,7 @@ function clearCacheMenu() {
 // Debug function to check dashboard data
 function debugDashboardData() {
   try {
-    const data = getKPIDashboardData(2025);
+    const data = getKPIDashboardData(DASHBOARD_YEAR);
     if (data.error) {
       SpreadsheetApp.getUi().alert('❌ Error: ' + data.error);
       return;
@@ -1961,7 +1961,7 @@ function debugDashboardData() {
     const sos = data.companies.SOS;
     const dle = data.companies.DLE;
 
-    let message = `🔍 Dashboard Data Debug (2024 + 2025):\n\n`;
+    let message = `🔍 Dashboard Data Debug (${DASHBOARD_YEAR}):\n\n`;
     
     message += `🏢 SOS Results:\n`;
     message += `  • Total Projects: ${sos.total}\n`;
@@ -1993,8 +1993,7 @@ function debugDashboardData() {
 // Test function to verify awarded projects fix
 function testAwardedProjectsFix() {
   try {
-    // Check the new multi-year dashboard data
-    const data = getKPIDashboardData(2025);
+    const data = getKPIDashboardData(DASHBOARD_YEAR);
     if (data.error) {
       SpreadsheetApp.getUi().alert('❌ Error: ' + data.error);
       return;
@@ -2002,16 +2001,16 @@ function testAwardedProjectsFix() {
 
     const dle = data.companies.DLE;
 
-    let message = `🧪 Awarded Projects Analysis (2024 + 2025):\n\n`;
+    let message = `🧪 Awarded Projects Analysis (${DASHBOARD_YEAR}):\n\n`;
     
-    message += `🏭 DLE Results (Combined 2024 & 2025):\n`;
+    message += `🏭 DLE Results (${DASHBOARD_YEAR}):\n`;
     message += `  • Total Projects: ${dle.total}\n`;
     message += `  • Awarded Projects: ${dle.awarded}\n`;
     message += `  • Expected: 8+\n\n`;
 
     if (dle.awarded >= 7) {
       message += `✅ SUCCESS: Now showing ${dle.awarded} awarded projects!\n`;
-      message += `   The dashboard now includes both 2024 and 2025 projects.\n\n`;
+      message += `   The dashboard is now filtered to ${DASHBOARD_YEAR} only.\n\n`;
     } else {
       message += `❌ ISSUE: Still only showing ${dle.awarded} awarded projects.\n`;
       message += `   Check if there are more awarded projects in the data.\n\n`;

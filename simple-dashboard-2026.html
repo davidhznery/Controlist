@@ -134,7 +134,7 @@
 </head>
 <body>
   <div class="header">
-    <h1>📊 Simple KPI Dashboard 2024-2025</h1>
+    <h1>📊 Simple KPI Dashboard 2026</h1>
     <button class="refresh-btn" onclick="loadData()">🔄 Refresh Data</button>
   </div>
 
@@ -208,6 +208,7 @@
   </div>
 
   <script>
+    const DASHBOARD_YEAR = 2026;
     // --- Temporary Ready-To-Quote (RTQ) sub-status overrides (Dashboard-only) ---
     const RTQ_SUBSTATUS_CATEGORIES = [
       'Ready to quote',
@@ -219,8 +220,8 @@
     ];
 
     function rtqOverridesKey(company) {
-      // Year is fixed to 2025 in this dashboard; namespace by company
-      return `rtq_overrides_2025_${company}`;
+      // Year is fixed to DASHBOARD_YEAR in this dashboard; namespace by company
+      return `rtq_overrides_${DASHBOARD_YEAR}_${company}`;
     }
     function loadRTQOverrides(company) {
       try {
@@ -278,7 +279,7 @@
           document.getElementById('loading').style.display = 'none';
           showError('Failed to load data: ' + error.message);
         })
-        .getKPIDashboardData(2025);
+        .getKPIDashboardData(DASHBOARD_YEAR);
     }
     
     function displayData(data) {
@@ -380,7 +381,7 @@
           setText(`${p}-rtq-proposals-ready`, counts.proposals_ready);
         })
         .withFailureHandler(function(){ /* ignore */ })
-        .getReadyToQuoteSubStatuses(company, 2025);
+        .getReadyToQuoteSubStatuses(company, DASHBOARD_YEAR);
     }
     
     function showProjectsByCategory(company, statusName) {
@@ -399,7 +400,7 @@
           .withFailureHandler(function(error) {
             alert('Error loading Ready to Quote projects: ' + error.message);
           })
-          .getReadyToQuoteSubStatuses(company, 2025);
+          .getReadyToQuoteSubStatuses(company, DASHBOARD_YEAR);
       } else {
         // Regular status handling
         google.script.run
@@ -418,7 +419,7 @@
           .withFailureHandler(function(error) {
             alert('Error loading projects: ' + error.message);
           })
-          .getProjectsByStatusSimple(company, statusName, 2025);
+          .getProjectsByStatusSimple(company, statusName, DASHBOARD_YEAR);
       }
     }
     
@@ -574,7 +575,7 @@
             showReadyToQuoteEditor(company, adjusted);
           }
         })
-        .getReadyToQuoteSubStatuses(company, 2025);
+        .getReadyToQuoteSubStatuses(company, DASHBOARD_YEAR);
       // Inform user this is local only
       setTimeout(function(){ alert('✅ Status saved locally for this dashboard view. No changes were made to the spreadsheet.'); }, 50);
       // Also refresh the visible RTQ counters in the main table

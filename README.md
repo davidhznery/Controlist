@@ -28,7 +28,7 @@ Controlist/
 ├── code.gs.js                 # Main Google Apps Script code
 ├── simple-dashboard.html      # KPI Dashboard interface
 ├── sidebar-new-project.html   # New project creation form
-├── appscript.json            # Apps Script configuration
+├── appsscript.json            # Apps Script configuration
 └── README.md                 # This file
 ```
 
@@ -41,7 +41,7 @@ Controlist/
 4. Create HTML files:
    - `simple-dashboard.html` (copy from the file)
    - `sidebar-new-project.html` (copy from the file)
-5. Update the `appscript.json` with your configuration
+5. Update the `appsscript.json` with your configuration
 
 ### 2. Google Sheets Configuration
 1. Create a Google Sheet with two tabs: "SOS" and "DLE"
@@ -170,3 +170,4 @@ For support and questions:
 ---
 
 *Last updated: January 2025*
+
