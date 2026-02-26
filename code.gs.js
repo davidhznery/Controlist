@@ -154,7 +154,7 @@ const DLE_TEMPLATE_FILES = {
       { fileId: "1tkQYVKpIOTwF0lHgCni2s2CnSudnEn3W", name: "SO-DLE {{NO}} Soft Corporate Proposal.docx" }
     ],
     "8- Sent_to_the_Client": [
-      { folderId: "1cUPM9h-1CujXvRZIqnh3Pm-w_0_GgOXw_3aOv8sg", dest: "8- Sent_to_the_Client" }
+      { folderId: "1mMBpFOtkPEVOBcE76d38yAD4CB6gBMEA", dest: "8- Sent_to_the_Client" }
     ]
   }
 };
