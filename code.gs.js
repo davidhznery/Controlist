@@ -1,5 +1,5 @@
 /************** CONFIG PRINCIPAL **************/
-const SOS_PARENT_FOLDER_ID = "1QluhICfJkNjc6HBMpQbcZEN5dq3zIeW-";
+const SOS_PARENT_FOLDER_ID = "1i1kXDd7YYMgtBStVFNl_anH9BnEXKPGI";
 const DLE_PARENT_FOLDER_ID = "1fc_HIWAJnX9pGTLcDMArp8r2uoC6RjCc";
 
 const DRIVE_LINK_HEADER = "Drive Folder";
@@ -21,6 +21,7 @@ const COLMAP = {
 // Estructura de subcarpetas
 const SUBFOLDERS = {
   SOS: [
+    "0- Correspondence",
     "1- Documents_&_Data_From_Client",
     "2- RFQ",
     "3- Supplier",
@@ -28,40 +29,35 @@ const SUBFOLDERS = {
     "5- Contracts Agreements",
     "6- Native files",
     "7- Proposal",
-    "8- Sent_to_the_Client"
+    "8- TQ"
   ],
   DLE: {
     ChampionX: [
-      "1- Documents_&_Data_From_Client",
+      "0- Correspondence",
       "2- RFQ",
-      "3- Supplier",
       "4- Estimation",
-      "5- Contracts Agreements",
-      "6- Native files",
+      "6- Native_files",
       "7- Proposal",
-      "8- Sent_to_the_Client"
     ],
     Procurement: [
-      "1- Documents_&_Data_From_Client",
+      "0- Correspondence",
       "2- RFQ",
-      "3- Supplier",
       "4- Estimation",
-      "5- Contracts Agreements",
-      "6- Native files",
+      "6- Native_files",
       "7- Proposal",
-      "8- Sent_to_the_Client"
+      "9- Technical Querys",
     ],
     Trading: [
+      "0- Correspondence",
       "1- Documents_&_Data_From_Client",
-      "2- RFQ",
-      "3 - Suppliers",
+      "3- Suppliers",
       "4- Estimation",
-      "5 Contract Agreement",
-      "6 Native Files",
-      "7 Proposals",
-      "8- Sent_to_the_Client"
-    ]
-  }
+      "5- Contracts_Agreements",
+      "6- Native_files",
+      "7- Proposal",
+      "8- Sent_to_the_Client",
+    ],
+  },
 };
 
 /************** PLANTILLAS **************/
@@ -69,73 +65,96 @@ const SUBFOLDERS = {
 
 // === SOS ===
 const SOS_TEMPLATE_FILES = {
+  "0- Correspondence": [
+    { fileId: "1cUPM9h-u4WpqLRl7bPZLby7ckrlq9_gQ", name: "SOS {{NO}} {{SUBJECT}}.docx" },
+
+  ],
   "2- RFQ": [
-    { fileId: "1J72WbQTYx9E8MuwpEoiKmnMd-SpKZC7L", name: "RFQ SOS {{NO}} {{SUBJECT}}.docx" },
-    { fileId: "1j493mcVrBGe5A154rMCkcJCLwBNxqG7X", name: "RFQ HMJ {{NO}} {{SUBJECT}}.docx" }
+    { fileId: "1RdfszPOIqIWqcg9P1XzceMfrOF7hYvAs", name: "RFQ SOS {{NO}} {{SUBJECT}}.docx" },
   ],
   "4- Estimation": [
     // ID corregido que me pasaste
-    { fileId: "1_WuLIhvFCj5x4PkGwprYMQvqgL_nsRGD", name: "SOS {{NO}} Estimation cost.xlsx" }
+    { fileId: "1LO1r_F1nL5-cW8Oil7f4Aajg1ml286BM", name: "SOS {{NO}} Estimation cost.xlsx" }
     // Si quieres copiar una subcarpeta con imágenes, vuelve a activar:
     // ,{ folderId: "1i7mS6cskeo5j8yJWz_GzmHQjIWHCh8uJ", dest: "4- Estimation/Dimensions" }
   ],
   "7- Proposal": [
-    { fileId: "16vdR3OvluNpaRJ4pCNwHSjUhD6QDdcWn", name: "SOS {{NO}} Technical Proposal.docx" },
-    { fileId: "1PpAz5-NZ3BE9qyaWSlwy9h23hV1MkchV", name: "SOS {{NO}} Commercial Proposal.docx" }
+    { fileId: "1JmaIn_S63UuDHMwzd3IM8oWChW45DiVW", name: "SOS {{NO}} Technical Proposal.docx" },
+    { fileId: "1_6XhAknJCxnjAHvMK239MepD3PCe6Rem", name: "SOS {{NO}} Commercial Proposal.docx" }
+  ],
+  "8- TQ": [
+    { fileId: "1KmK04aDHDxrOo8glBifQlnZEHWa8Ybmj", name: "SOS {{NO}} TQ.docx" }
   ]
 };
 
-// === DLE por división ===
+// === DLE Templates (match EXACT folder names from the corrected structure) ===
 const DLE_TEMPLATE_FILES = {
   ChampionX: {
+    "0- Correspondence": [
+      { fileId: "1XfFl0COD5w8pTnjpuOlBKXvUismuTBsl", name: "DLE {{NO}} {{SUBJECT}}.docx" },
+    ],
     "2- RFQ": [
       { fileId: "1TEXpSwCzEG4qm73AjUfhFZFAL3ktLCrH", name: "RFQ DLE {{NO}} {{SUBJECT}}.docx" }
     ],
     "4- Estimation": [
-      { fileId: "1BBTjKAJPZjH-71eI7EK3nShFPuhkO0eJ", name: "DLE {{NO}} Estimation cost.xlsx" }
+      { fileId: "1atrJ_Y6aI3sOv6l2s4QJxDaPFnR0jV8z", name: "DLE {{NO}} Estimation cost.xlsx" }
     ],
-    "6- Native files": [
-      { folderId: "19dTU1cMPypdR97p1KbZzCZDrQUAGj5Q8", dest: "6- Native files" }
+    "6- Native_files": [
+      { fileId: "19dTU1cMPypdR97p1KbZzCZDrQUAGj5Q8", name: "LE-DLE {{NO}} Communication Letter.docx" }
     ],
     "7- Proposal": [
       { fileId: "1usnsK2tnVPU7u0N6mLQ-jzI_nEdimIWt", name: "DLE {{NO}} Commercial Proposal.docx" },
       { fileId: "1527BI2I9hK756wywZdR28QKTKaLgDwlp", name: "DLE {{NO}} Technical Proposal.docx" }
     ]
   },
+
   Procurement: {
+    "0- Correspondence": [
+      { fileId: "1OLy6OhbHeDeFxXWbEa-wMXL4Ak8u2aHE", name: "DLE {{NO}} {{SUBJECT}}.docx" },
+    ],
     "2- RFQ": [
       { fileId: "1WLiUhxaGnNgBjUPIKDrZrIkepxInD8Yn", name: "RFQ DLE {{NO}} {{SUBJECT}}.docx" }
     ],
     "4- Estimation": [
-      { fileId: "12YozIWDtuOITqunrzJFkCE9JXFwD-Hb3", name: "DLE {{NO}} Estimation cost.xlsx" }
+      { fileId: "1UHE7hM3-kpYRhMWn6uNIAqXOPVBdJf54", name: "DLE {{NO}} Estimation cost.xlsx" }
     ],
-    "6- Native files": [
-      { folderId: "16e6f2Rf2y8W7McaS64n6PihnCtLpogtB", dest: "6- Native files" }
+    "6- Native_files": [
+      { fileId: "16e6f2Rf2y8W7McaS64n6PihnCtLpogtB", name: "LE-DLE {{NO}} Communication Letter.docx" }
     ],
     "7- Proposal": [
       { fileId: "1bFJyeBjB5QOiGTFCuWQeGotxzmrpQgCZ", name: "DLE {{NO}} Commercial Proposal.docx" },
       { fileId: "1SXbnmuTRINzdW1PVs3gPi3k-sM1LnJGa", name: "DLE {{NO}} Technical Proposal.docx" }
+    ],
+    "9- Technical Querys": [
+      { fileId: "1NXHjAATIQVg9AaHoABRWxct4M874Oqdw", name: "DLE {{NO}} TQ.docx" }
     ]
   },
+
   Trading: {
+    "0- Correspondence": [
+      { fileId: "10BzxFn1Cs6VPZHyq_fLhxkNu0I8i9Qvs", name: "DLE {{NO}} {{SUBJECT}}.docx" },
+    ],
     "1- Documents_&_Data_From_Client": [
       { folderId: "1UI1zAkkCeTHoo3yLBAr8VppErCeg-4y2", dest: "1- Documents_&_Data_From_Client" }
     ],
-    "3 - Suppliers": [
-      { fileId: "1E3eaDJNizBM5hC2xN6-ff7C8KL7Vszm8", name: "DLE KYC Supplier.docx" },
-      { fileId: "1V_E6hJrirh-EtINuVs3lRfusvLRUcbt4", name: "RECAP.docx" }
+    "3- Suppliers": [
+      { fileId: "1V_E6hJrirh-EtINuVs3lRfusvLRUcbt4", name: "FOB RECAP SUPPLIER.docx" },
     ],
     "4- Estimation": [
-      { fileId: "1Eq0oYdkeZtgF9BaoJlZTkkzRkmjCwdP0", name: "DLE {{NO}} Estimation cost.xlsx" }
+      { fileId: "1gRiEmFsR4TR8_29E4jNxN--8_VTNc8s7", name: "DLE {{NO}} Estimation cost.xlsx" }
     ],
-    "5 Contract Agreement": [
+    "5- Contracts_Agreements": [
       { fileId: "1OCDHmEtqQtAlOu-phMvivSZadJ993q30", name: "RECAP Template.docx" }
     ],
-    "6 Native Files": [
-      { folderId: "1P6DcRKSMXp7TWz2fuYQA5LKbw45VGjI_", dest: "6 Native Files" }
+    "6- Native_files": [
+      { fileId: "137pc4hp87kmbOTqhMy2z2GU3EEjyK6MC", name: "LI-DLE {{NO}} Letter of Interest {{SUBJECT}}.docx" },
+      { fileId: "182UGA1sImwEC0eeyXLjJzT8vPFcl0YRj", name: "RQ-DLE {{NO}} Requirements Gathering {{SUBJECT}}.docx" }
     ],
-    "7 Proposals": [
-      { fileId: "1tkQYVKpIOTwF0lHgCni2s2CnSudnEn3W", name: "Soft Corporate Proposal.docx" }
+    "7- Proposal": [
+      { fileId: "1tkQYVKpIOTwF0lHgCni2s2CnSudnEn3W", name: "SO-DLE {{NO}} Soft Corporate Proposal.docx" }
+    ],
+    "8- Sent_to_the_Client": [
+      { folderId: "1cUPM9h-1CujXvRZIqnh3Pm-w_0_GgOXw_3aOv8sg", dest: "8- Sent_to_the_Client" }
     ]
   }
 };
@@ -146,18 +165,18 @@ const LEADERS_SHEET = "Leaders";
 const STATUSES_SHEET = "Statuses";
 
 const CLIENTS_SEED = [
-  "AGOCO","ADNOC","AKAKUS","ALBERTA","AQUANI","AWDIA","AZZ","BOFFETTI","BLUE BORDER","BREGA","CPSU",
-  "CNOOC IRAQ LIMITED","COCA COLA","CONEXUS BALTIC GROUP","CPSU-MALTA","DELIMARA","DELTA FZ LLE","ELICS ENGINEERING",
-  "GREENSTREAM BV","HARRY PYE","HIGH TECH","HOO","INTECH","KE GROUP","LITRO GAS","LIEBHERR","MABRUK OIL OPERATIONS",
-  "MEDICON SERVICES","MELITA MARINE GROUP","MIN TRANSP MT","MOG","NWD","ORLEN LIETUVA","ORLEN POLUDNIE","PALUMBO",
-  "PKN ORLEN","QATAR CO","QATAR PE","RASCO","SABRI","SIRTE","SOS-Internal","TECHNO LOGIC LTD.","TRANSPORT MALTA",
-  "UN- Ethiopia","UNIPETROL","UNILEVER","WAHA","WASTESERVE MALTA","WSC","WINTERSHALL","ZOC","GTCHS","AJIBADE","MOSD",
-  "DSO","ENEMALTA","DAKAR","CAMEROON","SPAIN","NETHERLANDS","EASY GAS","D&S Holding","WOC","Lome","Air-JP"
+  "AGOCO", "ADNOC", "AKAKUS", "ALBERTA", "AQUANI", "AWDIA", "AZZ", "BOFFETTI", "BLUE BORDER", "BREGA", "CPSU",
+  "CNOOC IRAQ LIMITED", "COCA COLA", "CONEXUS BALTIC GROUP", "CPSU-MALTA", "DELIMARA", "DELTA FZ LLE", "ELICS ENGINEERING",
+  "GREENSTREAM BV", "HARRY PYE", "HIGH TECH", "HOO", "INTECH", "KE GROUP", "LITRO GAS", "LIEBHERR", "MABRUK OIL OPERATIONS",
+  "MEDICON SERVICES", "MELITA MARINE GROUP", "MIN TRANSP MT", "MOG", "NWD", "ORLEN LIETUVA", "ORLEN POLUDNIE", "PALUMBO",
+  "PKN ORLEN", "QATAR CO", "QATAR PE", "RASCO", "SABRI", "SIRTE", "SOS-Internal", "TECHNO LOGIC LTD.", "TRANSPORT MALTA",
+  "UN- Ethiopia", "UNIPETROL", "UNILEVER", "WAHA", "WASTESERVE MALTA", "WSC", "WINTERSHALL", "ZOC", "GTCHS", "AJIBADE", "MOSD",
+  "DSO", "ENEMALTA", "DAKAR", "CAMEROON", "SPAIN", "NETHERLANDS", "EASY GAS", "D&S Holding", "WOC", "Lome", "Air-JP"
 ];
 
 const LEADERS_SEED = [
-  "Abd alrhman","Alaa","Franklin Acevedo","Sabri Rezk","Cesar Jurado",
-  "Younis","Dajana Zeka","Duygu","David Hernandez","Ahmed"
+  "Abd alrhman", "Alaa", "Franklin Acevedo", "Sabri Rezk", "Cesar Jurado",
+  "Younis", "Dajana Zeka", "Duygu", "David Hernandez", "Ahmed"
 ];
 
 const STATUSES_SEED = [
@@ -186,7 +205,7 @@ function sanitize(s) {
   return String(s).replace(/[<>:"/\\|?*]/g, "-").replace(/\s+/g, " ").trim().substring(0, 180);
 }
 function getOrCreateHeaderColumn_(sheet, headerName) {
-  const head = sheet.getRange(1,1,1, sheet.getLastColumn()).getValues()[0];
+  const head = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
   let idx = head.indexOf(headerName) + 1;
   if (idx === 0) { idx = sheet.getLastColumn() + 1; sheet.getRange(1, idx).setValue(headerName); }
   return idx;
@@ -206,10 +225,10 @@ function buildFolderName_(company, rowObj) {
   const right = [rowObj.client, rowObj.subject].filter(Boolean).join(" - ");
   return sanitize([left, right].filter(Boolean).join(" - "));
 }
-function detectCompany_(sheetName){
+function detectCompany_(sheetName) {
   const n = sheetName.trim().toUpperCase();
-  if (n === (COLMAP.SOS.SHEET_NAME||"SOS").toUpperCase() || /(^|[^A-Z])SOS([^A-Z]|$)/i.test(sheetName)) return "SOS";
-  if (n === (COLMAP.DLE.SHEET_NAME||"DLE").toUpperCase() || /(^|[^A-Z])DLE([^A-Z]|$)/i.test(sheetName)) return "DLE";
+  if (n === (COLMAP.SOS.SHEET_NAME || "SOS").toUpperCase() || /(^|[^A-Z])SOS([^A-Z]|$)/i.test(sheetName)) return "SOS";
+  if (n === (COLMAP.DLE.SHEET_NAME || "DLE").toUpperCase() || /(^|[^A-Z])DLE([^A-Z]|$)/i.test(sheetName)) return "DLE";
   throw new Error("No puedo detectar la compania. Renombra las pestañas a 'SOS' y 'DLE' o ajusta COLMAP.*.SHEET_NAME.");
 }
 function getParentFor_(company) {
@@ -230,7 +249,7 @@ function ensureListSheet_(name, seed) {
   }
   if (seed && seed.length && sh.getLastRow() === 0) {
     const unique = Array.from(new Set(seed.map(s => String(s).trim()).filter(Boolean))).sort();
-    sh.getRange(1,1,unique.length,1).setValues(unique.map(v => [v]));
+    sh.getRange(1, 1, unique.length, 1).setValues(unique.map(v => [v]));
   }
   return sh;
 }
@@ -238,7 +257,7 @@ function getListValues_(name, seed) {
   const sh = ensureListSheet_(name, seed);
   const last = sh.getLastRow();
   if (last === 0) return [];
-  return sh.getRange(1,1,last,1).getValues().map(r => String(r[0]).trim()).filter(Boolean);
+  return sh.getRange(1, 1, last, 1).getValues().map(r => String(r[0]).trim()).filter(Boolean);
 }
 function appendUniqueToList_(name, seed, value) {
   const v = String(value || "").trim();
@@ -292,12 +311,12 @@ function hasCaseInsensitiveValue_(value, listValues) {
   if (!v) return false;
   return (listValues || []).some(item => String(item || "").trim().toLowerCase() === v);
 }
-function getClients_()  { return getListValues_(CLIENTS_SHEET,  CLIENTS_SEED); }
-function getLeaders_()  { return getListValues_(LEADERS_SHEET,  LEADERS_SEED); }
+function getClients_() { return getListValues_(CLIENTS_SHEET, CLIENTS_SEED); }
+function getLeaders_() { return getListValues_(LEADERS_SHEET, LEADERS_SEED); }
 function getStatuses_() { return getListValues_(STATUSES_SHEET, STATUSES_SEED); }
-function addClient_(name)  { appendUniqueToList_(CLIENTS_SHEET,  CLIENTS_SEED,  name);  return getClients_(); }
-function addLeader_(name)  { appendUniqueToList_(LEADERS_SHEET,  LEADERS_SEED,  name);  return getLeaders_(); }
-function addStatus_(name)  { appendUniqueToList_(STATUSES_SHEET, STATUSES_SEED, name);  return getStatuses_(); }
+function addClient_(name) { appendUniqueToList_(CLIENTS_SHEET, CLIENTS_SEED, name); return getClients_(); }
+function addLeader_(name) { appendUniqueToList_(LEADERS_SHEET, LEADERS_SEED, name); return getLeaders_(); }
+function addStatus_(name) { appendUniqueToList_(STATUSES_SHEET, STATUSES_SEED, name); return getStatuses_(); }
 
 /************** SUGERIR PRÓXIMO NÚMERO (###-YY) **************/
 function suggestNextProjectNo_(company) {
@@ -309,7 +328,7 @@ function suggestNextProjectNo_(company) {
   const lastRow = sh.getLastRow();
   if (lastRow < 2) return "001-" + yearYY;
 
-  const vals = sh.getRange(2, colNo, lastRow-1, 1).getValues().map(r => String(r[0]||"").trim());
+  const vals = sh.getRange(2, colNo, lastRow - 1, 1).getValues().map(r => String(r[0] || "").trim());
   let maxN = 0;
   vals.forEach(v => {
     const m = v.match(/^(\d+)-(\d{2})$/);
@@ -318,14 +337,14 @@ function suggestNextProjectNo_(company) {
       if (!isNaN(n) && n > maxN) maxN = n;
     }
   });
-  return String(maxN + 1).padStart(3,"0") + "-" + yearYY;
+  return String(maxN + 1).padStart(3, "0") + "-" + yearYY;
 }
 function getFormDefaults(company) {
   const comp = (company === "DLE") ? "DLE" : "SOS";
   return {
     nextNo: suggestNextProjectNo_(comp),
-    clients:  getClients_(),
-    leaders:  getLeaders_(),
+    clients: getClients_(),
+    leaders: getLeaders_(),
     statuses: getStatuses_()
   };
 }
@@ -370,9 +389,9 @@ function copyFolderContents_(folderId, targetFolder, errors) {
 function copyTemplates_(projectFolder, company, division, rowObj) {
   const map = templateMapFor_(company, division);
   const errors = [];
-  Object.keys(map).forEach(function(subfolderName){
+  Object.keys(map).forEach(function (subfolderName) {
     const baseTarget = ensureSubPath_(projectFolder, subfolderName);
-    map[subfolderName].forEach(function(t){
+    map[subfolderName].forEach(function (t) {
       if (t.folderId) {
         const dest = t.dest ? ensureSubPath_(projectFolder, t.dest) : baseTarget;
         copyFolderContents_(t.folderId, dest, errors);
@@ -448,8 +467,8 @@ function setupMenu() {
     .addItem("Validate config (IDs/Sheets)", "validateConfig")
     .addItem("Fix invalid Clients (normalize)", "fixInvalidClients")
     .addToUi();
-    
-    SpreadsheetApp.getUi()
+
+  SpreadsheetApp.getUi()
     .createMenu("Reports")
     .addItem("📊 Simple KPI Dashboard…", "openSimpleDashboard")
     .addItem("🧪 Simple Dashboard Test…", "simpleQuickTest")
@@ -460,7 +479,7 @@ function setupMenu() {
     .addItem("🔄 Clear Cache…", "clearCacheMenu")
     .addToUi();
 }
-function onOpen(){ setupMenu(); }
+function onOpen() { setupMenu(); }
 
 function createForActiveRow() {
   try {
@@ -475,13 +494,13 @@ function createForActiveRow() {
     const { url } = createProjectStructure_(company, division, rowObj);
     writeLinkBack_(sheet, row, url);
     SpreadsheetApp.getUi().alert("Carpeta creada:\n" + url);
-  } catch (e){ SpreadsheetApp.getUi().alert("Error: " + e.message); }
+  } catch (e) { SpreadsheetApp.getUi().alert("Error: " + e.message); }
 }
 
 function createForAllRows() {
   try {
     const ss = SpreadsheetApp.getActiveSpreadsheet();
-    ["SOS","DLE"].forEach(function(company){
+    ["SOS", "DLE"].forEach(function (company) {
       const sheet = ss.getSheetByName(COLMAP[company].SHEET_NAME);
       if (!sheet) return;
       const last = sheet.getLastRow();
@@ -500,7 +519,7 @@ function createForAllRows() {
       }
     });
     SpreadsheetApp.getUi().alert("Proceso terminado.");
-  } catch(e){ SpreadsheetApp.getUi().alert("Error: " + e.message); }
+  } catch (e) { SpreadsheetApp.getUi().alert("Error: " + e.message); }
 }
 
 /************** DIÁLOGO ANCHO (sin Picker) **************/
@@ -513,12 +532,12 @@ function openNewProjectSidebar() {
 }
 
 /************** DIAGNÓSTICO / VALIDACIÓN **************/
-function diagnoseActiveRow(){
+function diagnoseActiveRow() {
   const ss = SpreadsheetApp.getActiveSpreadsheet();
   const sheet = ss.getActiveSheet();
   const row = sheet.getActiveCell().getRow();
   let company;
-  try { company = detectCompany_(sheet.getName()); } catch(e){ company = "??"; }
+  try { company = detectCompany_(sheet.getName()); } catch (e) { company = "??"; }
   const obj = readRowToObject_(sheet, row, company === "??" ? "SOS" : company);
   SpreadsheetApp.getUi().alert(
     "Sheet: " + sheet.getName() + "\n" +
@@ -530,13 +549,13 @@ function diagnoseActiveRow(){
     "Deadline: " + obj.deadline
   );
 }
-function validateConfig(){
+function validateConfig() {
   const ss = SpreadsheetApp.getActiveSpreadsheet();
   const issues = [];
   if (!ss.getSheetByName(COLMAP.SOS.SHEET_NAME)) issues.push("No existe la hoja: " + COLMAP.SOS.SHEET_NAME);
   if (!ss.getSheetByName(COLMAP.DLE.SHEET_NAME)) issues.push("No existe la hoja: " + COLMAP.DLE.SHEET_NAME);
-  try { DriveApp.getFolderById(SOS_PARENT_FOLDER_ID); } catch(e){ issues.push("SOS_PARENT_FOLDER_ID invalido o sin permisos."); }
-  try { DriveApp.getFolderById(DLE_PARENT_FOLDER_ID); } catch(e){ issues.push("DLE_PARENT_FOLDER_ID invalido o sin permisos."); }
+  try { DriveApp.getFolderById(SOS_PARENT_FOLDER_ID); } catch (e) { issues.push("SOS_PARENT_FOLDER_ID invalido o sin permisos."); }
+  try { DriveApp.getFolderById(DLE_PARENT_FOLDER_ID); } catch (e) { issues.push("DLE_PARENT_FOLDER_ID invalido o sin permisos."); }
   SpreadsheetApp.getUi().alert(issues.length ? ("Problemas:\n- " + issues.join("\n- ")) : "Config OK");
 }
 
@@ -550,7 +569,7 @@ function getTargetSheet_(company) {
     const headers = company === "SOS"
       ? ["Proj.", "No.*", "Type", "Days for Deadline", "*Client*", "Client Ref No", "Received", "Month", "*Subject:*", "Deadline", "Month", "Status", "LEADER PJ"]
       : ["Proj.", "No.*", "Division", "Days for Deadline", "*Client*", "Client Ref No", "Received", "Month", "*Subject:*", "Deadline", "Month", "Status", "LEADER PJ"];
-    sh.getRange(1,1,1,headers.length).setValues([headers]);
+    sh.getRange(1, 1, 1, headers.length).setValues([headers]);
   }
   getOrCreateHeaderColumn_(sh, DRIVE_LINK_HEADER);
   return sh;
@@ -634,7 +653,7 @@ function fixInvalidClients() {
   var companies = ["SOS", "DLE"];
   var totalFixed = 0;
 
-  companies.forEach(function(company){
+  companies.forEach(function (company) {
     var map = COLMAP[company];
     var sh = ss.getSheetByName(map.SHEET_NAME);
     if (!sh) return;
@@ -673,7 +692,7 @@ const STATUS_GROUPS = {
   waiting_libya: ['Waiting for offer by Libya'],
   waiting_usa: ['Waiting for offer by USA'],
   waiting_for_quotation: [
-    'Waiting for offer by supplier','Waiting for offer by Libya','Waiting for offer by USA'
+    'Waiting for offer by supplier', 'Waiting for offer by Libya', 'Waiting for offer by USA'
   ],
   ready_to_quote: ['Ready to quote'],
   // Proposal sub-statuses
@@ -683,35 +702,35 @@ const STATUS_GROUPS = {
   estimation_pending: ['Estimation pending to approval'],
   proposals_ready: ['Proposals ready to Submit'],
   offer_submitted: ['Commercial proposal submitted'],
-  technical_query: ['Technical Query','Waiting Client Reply – Tech Query','Waiting Client Reply - Tech Query'],
+  technical_query: ['Technical Query', 'Waiting Client Reply – Tech Query', 'Waiting Client Reply - Tech Query'],
   technical_review: ['Technical Review'],
   restriction_from_supplier: ['Restriction from supplier'],
   no_proposal_tech: ['No proposal - Technical reasons'],
   no_proposal_com: ['No proposal - Comercial reasons'],
   on_hold: ['ON Hold - WFMD'],
-  canceled_by_client: ['Canceled by client','Canceled by the client'],
-  no_quote_deadline: ['No Quote – Deadline Passed','No Quote - Deadline Passed'],
+  canceled_by_client: ['Canceled by client', 'Canceled by the client'],
+  no_quote_deadline: ['No Quote – Deadline Passed', 'No Quote - Deadline Passed'],
   awarded: [
     // Exact matches
-    'Awared','Awarded','Awarded Projects','Awarded projects','AWARDED','AWARDED PROJECTS','awared','AWARED',
+    'Awared', 'Awarded', 'Awarded Projects', 'Awarded projects', 'AWARDED', 'AWARDED PROJECTS', 'awared', 'AWARED',
     // Common variations
-    'Awarded Project','Awarded project','AWARDED PROJECT','awarded project','Award','award','AWARD','Awar',
+    'Awarded Project', 'Awarded project', 'AWARDED PROJECT', 'awarded project', 'Award', 'award', 'AWARD', 'Awar',
     // With spaces and special chars
-    'Awarded  Projects','Awarded-Projects','Awarded_Projects','Awarded (Projects)',
+    'Awarded  Projects', 'Awarded-Projects', 'Awarded_Projects', 'Awarded (Projects)',
     // Partial matches will be handled separately
   ]
 };
 
 // Pre-normalized status groups for faster lookup
-const STATUS_GROUPS_NORM = (function(){
+const STATUS_GROUPS_NORM = (function () {
   const out = {};
-  Object.keys(STATUS_GROUPS).forEach(k=> out[k] = STATUS_GROUPS[k].map(s => String(s||'').replace(/\s+/g,' ').trim().toLowerCase()));
+  Object.keys(STATUS_GROUPS).forEach(k => out[k] = STATUS_GROUPS[k].map(s => String(s || '').replace(/\s+/g, ' ').trim().toLowerCase()));
   return out;
 })();
 
 // Fast year detection with regex compilation
 const YEAR_REGEX = /-(\d{2})\b/;
-function _noIsYear_(noValue, year){
+function _noIsYear_(noValue, year) {
   if (!noValue) return false;
   const m = String(noValue).match(YEAR_REGEX);
   if (!m) return false;
@@ -735,7 +754,7 @@ function getAllAwardedProjects(company) {
       return { error: 'No data found' };
     }
 
-    const values = sh.getRange(2, 1, last-1, sh.getLastColumn()).getValues();
+    const values = sh.getRange(2, 1, last - 1, sh.getLastColumn()).getValues();
     const awardedProjects = [];
     const yearCounts = {};
 
@@ -753,9 +772,9 @@ function getAllAwardedProjects(company) {
         // Extract year from project number
         const yearMatch = String(noVal).match(/-(\d{2})$/);
         const year = yearMatch ? (2000 + parseInt(yearMatch[1], 10)) : 'unknown';
-        
+
         yearCounts[year] = (yearCounts[year] || 0) + 1;
-        
+
         awardedProjects.push({
           row: i + 2,
           no: noVal,
@@ -767,10 +786,10 @@ function getAllAwardedProjects(company) {
       }
     });
 
-    return { 
-      awardedProjects, 
+    return {
+      awardedProjects,
       yearCounts,
-      total: awardedProjects.length 
+      total: awardedProjects.length
     };
 
   } catch (error) {
@@ -779,7 +798,7 @@ function getAllAwardedProjects(company) {
 }
 
 // Optimized empty company structure - matches HTML expectations
-function _emptyCompanyAgg(){
+function _emptyCompanyAgg() {
   return {
     rfq_pending_create: 0,
     rfq_pending_send: 0,
@@ -817,29 +836,29 @@ function _emptyCompanyAgg(){
 
 // Fast batch processing function for multiple years
 function _processBatchDataMultiYear_(values, map, years) {
-    const comp = _emptyCompanyAgg();
+  const comp = _emptyCompanyAgg();
   const today = new Date();
   const processedRows = [];
 
   // Process all rows in one pass
-    values.forEach((r, i) => {
-      const rowNum = i + 2; // Actual row number for debugging
+  values.forEach((r, i) => {
+    const rowNum = i + 2; // Actual row number for debugging
 
-      // Enhanced validation: skip completely empty rows
-      const isEmptyRow = !r || r.every(cell => !cell || String(cell).trim() === '');
-      if (isEmptyRow) return;
+    // Enhanced validation: skip completely empty rows
+    const isEmptyRow = !r || r.every(cell => !cell || String(cell).trim() === '');
+    if (isEmptyRow) return;
 
-      const noVal = r[map.NO - 1];
-      const subject = (r[map.SUBJECT - 1] || '').toString().trim();
+    const noVal = r[map.NO - 1];
+    const subject = (r[map.SUBJECT - 1] || '').toString().trim();
 
-      // Enhanced validation: require both project number and subject
-      if (!noVal || !subject) return;
+    // Enhanced validation: require both project number and subject
+    if (!noVal || !subject) return;
 
     // Check if project is in any of the specified years
     const projectYear = _getProjectYear_(noVal);
     if (!projectYear || !years.includes(projectYear)) return;
 
-    const status = String(r[map.STATUS - 1] || '').replace(/\s+/g,' ').trim().toLowerCase();
+    const status = String(r[map.STATUS - 1] || '').replace(/\s+/g, ' ').trim().toLowerCase();
     const client = r[map.CLIENT - 1] || '';
     const leader = r[map.LEADER - 1] || '';
     const deadline = r[map.DEADLINE - 1];
@@ -856,10 +875,10 @@ function _processBatchDataMultiYear_(values, map, years) {
       else priority = 'low';
     }
 
-      const rowObj = {
-        row: rowNum,
-        no: noVal,
-        year: projectYear,
+    const rowObj = {
+      row: rowNum,
+      no: noVal,
+      year: projectYear,
       client: client,
       subject: subject,
       deadline: deadline,
@@ -867,11 +886,11 @@ function _processBatchDataMultiYear_(values, map, years) {
       status: r[map.STATUS - 1] || '',
       daysToDeadline: daysToDeadline,
       priority: priority
-      };
+    };
 
-      // Count row towards totals
-      comp.total++;
-      comp.total_received++;
+    // Count row towards totals
+    comp.total++;
+    comp.total_received++;
 
     if (priority === 'overdue') comp.overdue_projects++;
     if (priority === 'high') comp.high_priority_projects++;
@@ -911,15 +930,15 @@ function _processBatchDataMultiYear_(values, map, years) {
   });
 
   // Fast KPI calculations
-    comp.offers_submitted = comp.offer_submitted;
-    comp.awarded_projects = comp.awarded;
+  comp.offers_submitted = comp.offer_submitted;
+  comp.awarded_projects = comp.awarded;
   comp.projects_not_quoted = comp.no_proposal_tech + comp.no_proposal_com +
-                             comp.restriction_from_supplier + comp.on_hold +
-                             comp.canceled_by_client + comp.no_quote_deadline;
+    comp.restriction_from_supplier + comp.on_hold +
+    comp.canceled_by_client + comp.no_quote_deadline;
 
-    comp.conversion_offers_sent = comp.offers_submitted ? (comp.awarded_projects / comp.offers_submitted) : 0;
-    // Use total that the UI expects
-    comp.offer_conversion_rate = comp.total ? (comp.awarded_projects / comp.total) : 0;
+  comp.conversion_offers_sent = comp.offers_submitted ? (comp.awarded_projects / comp.offers_submitted) : 0;
+  // Use total that the UI expects
+  comp.offer_conversion_rate = comp.total ? (comp.awarded_projects / comp.total) : 0;
 
   return comp;
 }
@@ -977,36 +996,36 @@ function getKPIDashboardData(year) {
   const out = { year, companies: {}, loadTime: 0 };
 
   try {
-    ['SOS','DLE'].forEach(company => {
+    ['SOS', 'DLE'].forEach(company => {
       const map = COLMAP[company];
       const sh = ss.getSheetByName(map.SHEET_NAME);
-      if (!sh) { 
-        out.companies[company] = _emptyCompanyAgg(); 
-        return; 
+      if (!sh) {
+        out.companies[company] = _emptyCompanyAgg();
+        return;
       }
 
       const last = sh.getLastRow();
-      if (last < 2) { 
-        out.companies[company] = _emptyCompanyAgg(); 
-        return; 
+      if (last < 2) {
+        out.companies[company] = _emptyCompanyAgg();
+        return;
       }
 
       // Read data in one batch operation
-      const values = sh.getRange(2, 1, last-1, sh.getLastColumn()).getValues();
-      
+      const values = sh.getRange(2, 1, last - 1, sh.getLastColumn()).getValues();
+
       // Process only the requested dashboard year
       const comp = _processBatchDataMultiYear_(values, map, [year]);
-    out.companies[company] = comp;
-  });
+      out.companies[company] = comp;
+    });
 
     const endTime = new Date();
     out.loadTime = Math.round((endTime - startTime) / 1000);
-    
+
     // Cache the result
     _setCachedData_(cacheKey, out);
 
-  return out;
-    
+    return out;
+
   } catch (error) {
     console.error('KPI Dashboard Error:', error);
     return { year, companies: {}, error: error.message, loadTime: 0 };
@@ -1016,7 +1035,7 @@ function getKPIDashboardData(year) {
 // Fast monthly trends with minimal processing
 function getMonthlyTrendData(year) {
   year = year || DASHBOARD_YEAR;
-  
+
   const cacheKey = `monthly_trends_${year}`;
   const cached = _getCachedData_(cacheKey);
   if (cached) return cached;
@@ -1024,7 +1043,7 @@ function getMonthlyTrendData(year) {
   const ss = SpreadsheetApp.getActive();
   const out = { year, monthlyData: {} };
 
-  ['SOS','DLE'].forEach(company => {
+  ['SOS', 'DLE'].forEach(company => {
     const map = COLMAP[company];
     const sh = ss.getSheetByName(map.SHEET_NAME);
     if (!sh) return;
@@ -1033,11 +1052,11 @@ function getMonthlyTrendData(year) {
     if (last < 2) return;
 
     // Only read necessary columns for speed
-    const values = sh.getRange(2, map.NO, last-1, 1).getValues(); // Project numbers
-    const receivedValues = sh.getRange(2, map.RECEIVED, last-1, 1).getValues(); // Received dates
-    
+    const values = sh.getRange(2, map.NO, last - 1, 1).getValues(); // Project numbers
+    const receivedValues = sh.getRange(2, map.RECEIVED, last - 1, 1).getValues(); // Received dates
+
     const monthlyCounts = Array(12).fill(0);
-    
+
     values.forEach((r, i) => {
       const noVal = r[0];
       if (!_noIsYear_(noVal, year)) return;
@@ -1059,7 +1078,7 @@ function getMonthlyTrendData(year) {
 // Fast client stats
 function getClientStats(year) {
   year = year || DASHBOARD_YEAR;
-  
+
   const cacheKey = `client_stats_${year}`;
   const cached = _getCachedData_(cacheKey);
   if (cached) return cached;
@@ -1067,11 +1086,11 @@ function getClientStats(year) {
   const data = getKPIDashboardData(year);
   const out = { year, companies: {} };
 
-  ['SOS','DLE'].forEach(company => {
+  ['SOS', 'DLE'].forEach(company => {
     if (data.companies[company]) {
       const comp = data.companies[company];
       const clientCounts = {};
-      
+
       // Count clients from all status groups
       Object.values(comp).forEach(statusGroup => {
         if (statusGroup.items && Array.isArray(statusGroup.items)) {
@@ -1085,7 +1104,7 @@ function getClientStats(year) {
 
       // Get top 10 clients
       const topClients = Object.entries(clientCounts)
-        .sort(([,a], [,b]) => b - a)
+        .sort(([, a], [, b]) => b - a)
         .slice(0, 10)
         .reduce((obj, [client, count]) => {
           obj[client] = count;
@@ -1125,33 +1144,33 @@ function refreshKPIDashboard() {
 // Simple function to get basic project counts
 function getSimpleDashboardData(year) {
   year = year || DASHBOARD_YEAR;
-  
+
   try {
     const ss = SpreadsheetApp.getActive();
     const out = { year, companies: {} };
-    
-    ['SOS','DLE'].forEach(company => {
+
+    ['SOS', 'DLE'].forEach(company => {
       const map = COLMAP[company];
       const sh = ss.getSheetByName(map.SHEET_NAME);
-      
+
       if (!sh) {
         out.companies[company] = { total: 0, statuses: {} };
         return;
       }
-      
+
       const last = sh.getLastRow();
       if (last < 2) {
         out.companies[company] = { total: 0, statuses: {} };
         return;
       }
-      
+
       // Read only the columns we need
-      const noCol = sh.getRange(2, map.NO, last-1, 1).getValues();
-      const statusCol = sh.getRange(2, map.STATUS, last-1, 1).getValues();
-      
+      const noCol = sh.getRange(2, map.NO, last - 1, 1).getValues();
+      const statusCol = sh.getRange(2, map.STATUS, last - 1, 1).getValues();
+
       const statuses = {};
       let total = 0;
-      
+
       for (let i = 0; i < noCol.length; i++) {
         const noVal = noCol[i][0];
         if (_noIsYear_(noVal, year)) {
@@ -1160,12 +1179,12 @@ function getSimpleDashboardData(year) {
           statuses[status] = (statuses[status] || 0) + 1;
         }
       }
-      
+
       out.companies[company] = { total, statuses };
     });
-    
+
     return out;
-    
+
   } catch (error) {
     return { year, companies: {}, error: error.message };
   }
@@ -1183,31 +1202,31 @@ function openSimpleDashboard() {
 }
 
 // Quick test function
-function simpleQuickTest(){
+function simpleQuickTest() {
   const startTime = new Date();
   const data = getSimpleDashboardData(DASHBOARD_YEAR);
   const endTime = new Date();
   const loadTime = Math.round((endTime - startTime) / 1000);
-  
+
   if (data.error) {
     SpreadsheetApp.getUi().alert('❌ Error: ' + data.error);
     return;
   }
-  
+
   const sos = data.companies.SOS;
   const dle = data.companies.DLE;
-  
+
   let message = `📊 Simple Dashboard Test Results for ${DASHBOARD_YEAR}:\n\n`;
   message += `⏱️ Load Time: ${loadTime} seconds\n\n`;
-  
+
   message += `🏢 SOS:\n`;
   message += `  • Total Projects: ${sos.total}\n`;
   message += `  • Statuses: ${Object.keys(sos.statuses).length}\n\n`;
-  
+
   message += `🏭 DLE:\n`;
   message += `  • Total Projects: ${dle.total}\n`;
   message += `  • Statuses: ${Object.keys(dle.statuses).length}\n`;
-  
+
   SpreadsheetApp.getUi().alert(message);
 }
 
@@ -1220,7 +1239,7 @@ function createEmptyKPIStructure() {
     rfq_pending_create: 0,
     rfq_pending_send: 0,
     waiting_for_quotation: 0,
-    
+
     // Proposal Process
     ready_to_quote: 0,
     creating_technical_proposal: 0,
@@ -1229,7 +1248,7 @@ function createEmptyKPIStructure() {
     estimation_pending: 0,
     proposals_ready: 0,
     offer_submitted: 0,
-    
+
     // Project Not Quoted
     technical_query: 0,
     technical_review: 0,
@@ -1240,7 +1259,7 @@ function createEmptyKPIStructure() {
     waiting_usa: 0,
     on_hold: 0,
     canceled_by_client: 0,
-    
+
     // Summary
     awarded: 0,
     total: 0,
@@ -1258,8 +1277,8 @@ function categorizeStatus(status, kpiData) {
   } else if (statusTrimmed === 'Pending RFQ Sending') {
     kpiData.rfq_pending_send++;
   } else if (statusTrimmed === 'Waiting for offer by supplier' ||
-             statusTrimmed === 'Waiting for offer by Libya' ||
-             statusTrimmed === 'Waiting for offer by USA') {
+    statusTrimmed === 'Waiting for offer by Libya' ||
+    statusTrimmed === 'Waiting for offer by USA') {
     kpiData.waiting_for_quotation++;
   }
 
@@ -1375,15 +1394,15 @@ function categorizeStatus(status, kpiData) {
 
 // Calculate total projects not quoted
 function calculateNotQuotedTotal(kpiData) {
-  return kpiData.technical_query + 
-         kpiData.technical_review + 
-         kpiData.restriction_from_supplier + 
-         kpiData.no_proposal_tech + 
-         kpiData.no_proposal_com + 
-         kpiData.waiting_libya + 
-         kpiData.waiting_usa + 
-         kpiData.on_hold + 
-         kpiData.canceled_by_client;
+  return kpiData.technical_query +
+    kpiData.technical_review +
+    kpiData.restriction_from_supplier +
+    kpiData.no_proposal_tech +
+    kpiData.no_proposal_com +
+    kpiData.waiting_libya +
+    kpiData.waiting_usa +
+    kpiData.on_hold +
+    kpiData.canceled_by_client;
 }
 
 // Removed duplicate function - keeping the cached version above
@@ -1391,24 +1410,24 @@ function calculateNotQuotedTotal(kpiData) {
 // Function to get projects by status for click functionality - now supports multiple years
 function getProjectsByStatusSimple(company, status, year) {
   year = year || DASHBOARD_YEAR;
-  
+
   try {
     const ss = SpreadsheetApp.getActive();
     const map = COLMAP[company];
     const sh = ss.getSheetByName(map.SHEET_NAME);
-    
+
     if (!sh) return { projects: [] };
-    
+
     const last = sh.getLastRow();
     if (last < 2) return { projects: [] };
-    
-    const noCol = sh.getRange(2, map.NO, last-1, 1).getValues();
-    const statusCol = sh.getRange(2, map.STATUS, last-1, 1).getValues();
-    const clientCol = sh.getRange(2, map.CLIENT, last-1, 1).getValues();
-    const subjectCol = sh.getRange(2, map.SUBJECT, last-1, 1).getValues();
-    
+
+    const noCol = sh.getRange(2, map.NO, last - 1, 1).getValues();
+    const statusCol = sh.getRange(2, map.STATUS, last - 1, 1).getValues();
+    const clientCol = sh.getRange(2, map.CLIENT, last - 1, 1).getValues();
+    const subjectCol = sh.getRange(2, map.SUBJECT, last - 1, 1).getValues();
+
     const projects = [];
-    
+
     // Map display names to actual status names in the spreadsheet
     const statusMapping = {
       'RFQ Pending to create': 'Waiting RFQ Creation',
@@ -1432,27 +1451,27 @@ function getProjectsByStatusSimple(company, status, year) {
       'Canceled by the client': 'Canceled by client',
       'Awarded': ['Awared', 'Awarded', 'Awarded Projects', 'Awarded projects', 'AWARDED', 'AWARDED PROJECTS', 'awared', 'AWARED']
     };
-    
+
     const actualStatuses = statusMapping[status];
     const statusList = Array.isArray(actualStatuses) ? actualStatuses : [actualStatuses];
-    
+
     for (let i = 0; i < noCol.length; i++) {
       const noVal = noCol[i][0];
       const rowStatus = String(statusCol[i][0] || '').trim();
-      
+
       // Check if project is from target dashboard year
       const projectYear = _getProjectYear_(noVal);
       const isTargetYear = projectYear === year;
-      
+
       // For awarded projects, also check with flexible matching
       let isAwarded = false;
       if (status === 'Awarded') {
         const statusLower = rowStatus.toLowerCase();
         isAwarded = statusLower.includes('award') || statusLower.includes('awared') || statusLower.includes('awarded');
       }
-      
+
       const statusMatches = statusList.includes(rowStatus) || (status === 'Awarded' && isAwarded);
-      
+
       if (isTargetYear && statusMatches) {
         projects.push({
           no: noVal,
@@ -1463,7 +1482,7 @@ function getProjectsByStatusSimple(company, status, year) {
         });
       }
     }
-    
+
     // Sort by year (desc) and then by project number
     projects.sort((a, b) => {
       if (a.year !== b.year) {
@@ -1471,9 +1490,9 @@ function getProjectsByStatusSimple(company, status, year) {
       }
       return a.no.localeCompare(b.no);
     });
-    
+
     return { projects };
-    
+
   } catch (error) {
     return { projects: [], error: error.message };
   }
@@ -1493,10 +1512,10 @@ function getReadyToQuoteSubStatuses(company, year) {
     const last = sh.getLastRow();
     if (last < 2) return { subStatuses: {} };
 
-    const noCol = sh.getRange(2, map.NO, last-1, 1).getValues();
-    const statusCol = sh.getRange(2, map.STATUS, last-1, 1).getValues();
-    const clientCol = sh.getRange(2, map.CLIENT, last-1, 1).getValues();
-    const subjectCol = sh.getRange(2, map.SUBJECT, last-1, 1).getValues();
+    const noCol = sh.getRange(2, map.NO, last - 1, 1).getValues();
+    const statusCol = sh.getRange(2, map.STATUS, last - 1, 1).getValues();
+    const clientCol = sh.getRange(2, map.CLIENT, last - 1, 1).getValues();
+    const subjectCol = sh.getRange(2, map.SUBJECT, last - 1, 1).getValues();
 
     // Define sub-status categories for "Ready to quote"
     const subStatuses = {
@@ -1557,25 +1576,25 @@ function getReadyToQuoteSubStatuses(company, year) {
 // Function to update project status
 function updateProjectStatus(company, projectNo, newStatus, year) {
   year = year || DASHBOARD_YEAR;
-  
+
   try {
     const ss = SpreadsheetApp.getActive();
     const map = COLMAP[company];
     const sh = ss.getSheetByName(map.SHEET_NAME);
-    
-  if (!sh) {
+
+    if (!sh) {
       return { success: false, error: 'Sheet not found' };
     }
-    
+
     const last = sh.getLastRow();
     if (last < 2) {
       return { success: false, error: 'No data found' };
     }
-    
+
     // Find the project row
-    const noCol = sh.getRange(2, map.NO, last-1, 1).getValues();
+    const noCol = sh.getRange(2, map.NO, last - 1, 1).getValues();
     let projectRow = -1;
-    
+
     for (let i = 0; i < noCol.length; i++) {
       const noVal = noCol[i][0];
       if (_noIsYear_(noVal, year) && String(noVal).trim() === String(projectNo).trim()) {
@@ -1583,16 +1602,16 @@ function updateProjectStatus(company, projectNo, newStatus, year) {
         break;
       }
     }
-    
+
     if (projectRow === -1) {
       return { success: false, error: 'Project not found' };
     }
-    
+
     // Update the status
     sh.getRange(projectRow, map.STATUS).setValue(newStatus);
-    
+
     return { success: true, message: `Project ${projectNo} status updated to "${newStatus}"` };
-    
+
   } catch (error) {
     return { success: false, error: error.message };
   }
@@ -1604,16 +1623,16 @@ function getAllValidStatuses(company) {
     const ss = SpreadsheetApp.getActive();
     const map = COLMAP[company];
     const sh = ss.getSheetByName(map.SHEET_NAME);
-    
+
     if (!sh) {
       return { statuses: [], error: 'Sheet not found' };
     }
-    
+
     // Get the data validation for the status column
     const statusColumn = map.STATUS;
     const range = sh.getRange(2, statusColumn, Math.max(1, sh.getLastRow() - 1), 1);
     const validation = range.getDataValidation();
-    
+
     if (validation && validation.getCriteriaType() === SpreadsheetApp.DataValidationCriteria.VALUE_IN_LIST) {
       // Get ALL valid values from data validation
       const validValues = validation.getCriteriaValues()[0];
@@ -1621,17 +1640,17 @@ function getAllValidStatuses(company) {
         return { statuses: validValues.sort() };
       }
     }
-    
+
     // If no data validation found, get all unique statuses from the data
     const last = sh.getLastRow();
     if (last >= 2) {
-      const statusCol = sh.getRange(2, map.STATUS, last-1, 1).getValues();
+      const statusCol = sh.getRange(2, map.STATUS, last - 1, 1).getValues();
       const uniqueStatuses = [...new Set(statusCol.map(row => String(row[0] || '').trim()).filter(status => status))].sort();
       return { statuses: uniqueStatuses };
     }
-    
+
     return { statuses: [], error: 'No statuses found' };
-    
+
   } catch (error) {
     return { statuses: [], error: error.message };
   }
@@ -1640,21 +1659,21 @@ function getAllValidStatuses(company) {
 // Debug function to see all statuses in spreadsheet
 function debugAllStatuses() {
   try {
-  const ss = SpreadsheetApp.getActive();
+    const ss = SpreadsheetApp.getActive();
     let message = `🔍 All Statuses in Spreadsheet:\n\n`;
 
     ['SOS', 'DLE'].forEach(company => {
-    const map = COLMAP[company];
-    const sh = ss.getSheetByName(map.SHEET_NAME);
-      
+      const map = COLMAP[company];
+      const sh = ss.getSheetByName(map.SHEET_NAME);
+
       if (sh) {
         message += `🏢 ${company}:\n`;
-        
+
         // Check data validation first
         const statusColumn = map.STATUS;
         const range = sh.getRange(2, statusColumn, Math.max(1, sh.getLastRow() - 1), 1);
         const validation = range.getDataValidation();
-        
+
         if (validation && validation.getCriteriaType() === SpreadsheetApp.DataValidationCriteria.VALUE_IN_LIST) {
           const validValues = validation.getCriteriaValues()[0];
           if (validValues && validValues.length > 0) {
@@ -1666,13 +1685,13 @@ function debugAllStatuses() {
         } else {
           message += `  ⚠️ No data validation found\n`;
         }
-        
+
         // Also show actual data
         const last = sh.getLastRow();
         if (last >= 2) {
-          const statusCol = sh.getRange(2, map.STATUS, last-1, 1).getValues();
+          const statusCol = sh.getRange(2, map.STATUS, last - 1, 1).getValues();
           const uniqueStatuses = [...new Set(statusCol.map(row => String(row[0] || '').trim()).filter(status => status))].sort();
-          
+
           message += `  📊 Actual Data (${uniqueStatuses.length}):\n`;
           uniqueStatuses.forEach(status => {
             message += `    • "${status}"\n`;
@@ -1681,9 +1700,9 @@ function debugAllStatuses() {
         message += `\n`;
       }
     });
-    
+
     SpreadsheetApp.getUi().alert(message);
-    
+
   } catch (error) {
     SpreadsheetApp.getUi().alert('Error: ' + error.message);
   }
@@ -1693,10 +1712,10 @@ function debugAllStatuses() {
 function testAllValidStatuses() {
   const sosStatuses = getAllValidStatuses('SOS');
   const dleStatuses = getAllValidStatuses('DLE');
-  
+
   let message = `🧪 All Valid Statuses Test:\n\n`;
   message += `These are ALL statuses available in your spreadsheet:\n\n`;
-  
+
   message += `🏢 SOS Statuses (${sosStatuses.statuses.length}):\n`;
   if (sosStatuses.statuses.length > 0) {
     sosStatuses.statuses.forEach(status => {
@@ -1705,7 +1724,7 @@ function testAllValidStatuses() {
   } else {
     message += `  ⚠️ No statuses found\n`;
   }
-  
+
   message += `\n🏭 DLE Statuses (${dleStatuses.statuses.length}):\n`;
   if (dleStatuses.statuses.length > 0) {
     dleStatuses.statuses.forEach(status => {
@@ -1714,14 +1733,14 @@ function testAllValidStatuses() {
   } else {
     message += `  ⚠️ No statuses found\n`;
   }
-  
+
   if (sosStatuses.error) {
     message += `\n❌ SOS Error: ${sosStatuses.error}`;
   }
   if (dleStatuses.error) {
     message += `\n❌ DLE Error: ${dleStatuses.error}`;
   }
-  
+
   SpreadsheetApp.getUi().alert(message);
 }
 
@@ -1730,9 +1749,9 @@ function testReadyToQuoteProjects() {
   try {
     const sosResult = getReadyToQuoteSubStatuses('SOS', DASHBOARD_YEAR);
     const dleResult = getReadyToQuoteSubStatuses('DLE', DASHBOARD_YEAR);
-    
+
     let message = `🧪 Ready to Quote Projects Test:\n\n`;
-    
+
     message += `🏢 SOS - Ready to Quote Projects:\n`;
     if (sosResult.subStatuses && sosResult.subStatuses['Ready to quote']) {
       const count = sosResult.subStatuses['Ready to quote'].length;
@@ -1745,7 +1764,7 @@ function testReadyToQuoteProjects() {
     } else {
       message += `  ❌ No Ready to quote projects found\n`;
     }
-    
+
     message += `\n🏭 DLE - Ready to Quote Projects:\n`;
     if (dleResult.subStatuses && dleResult.subStatuses['Ready to quote']) {
       const count = dleResult.subStatuses['Ready to quote'].length;
@@ -1758,9 +1777,9 @@ function testReadyToQuoteProjects() {
     } else {
       message += `  ❌ No Ready to quote projects found\n`;
     }
-    
+
     SpreadsheetApp.getUi().alert(message);
-    
+
   } catch (error) {
     SpreadsheetApp.getUi().alert('Error in Ready to Quote test: ' + error.message);
   }
@@ -1861,7 +1880,7 @@ function debugKPIDashboard() {
 function debugAllAwardedProjects() {
   try {
     const result = getAllAwardedProjects('DLE');
-    
+
     if (result.error) {
       SpreadsheetApp.getUi().alert('❌ Error: ' + result.error);
       return;
@@ -1869,7 +1888,7 @@ function debugAllAwardedProjects() {
 
     let message = `🔍 All Awarded Projects in DLE:\n\n`;
     message += `📊 Total Awarded Projects: ${result.total}\n\n`;
-    
+
     message += `📅 By Year:\n`;
     Object.entries(result.yearCounts)
       .sort(([a], [b]) => b - a)
@@ -1931,18 +1950,18 @@ function clearCacheMenu() {
       `monthly_trends_${DASHBOARD_YEAR}`,
       `client_stats_${DASHBOARD_YEAR}`
     ]);
-    
+
     // Force refresh by calling the function directly
     const data = getKPIDashboardData(DASHBOARD_YEAR);
     const dle = data.companies.DLE;
-    
+
     let message = `✅ Cache cleared successfully!\n\n`;
     message += `📊 Current DLE Data (${DASHBOARD_YEAR}):\n`;
     message += `  • Total Projects: ${dle.total}\n`;
     message += `  • Awarded Projects: ${dle.awarded}\n`;
     message += `  • Offer Submitted: ${dle.offer_submitted}\n\n`;
     message += `The dashboard will now show fresh data!`;
-    
+
     SpreadsheetApp.getUi().alert(message);
   } catch (error) {
     SpreadsheetApp.getUi().alert('❌ Error clearing cache: ' + error.message);
@@ -1962,12 +1981,12 @@ function debugDashboardData() {
     const dle = data.companies.DLE;
 
     let message = `🔍 Dashboard Data Debug (${DASHBOARD_YEAR}):\n\n`;
-    
+
     message += `🏢 SOS Results:\n`;
     message += `  • Total Projects: ${sos.total}\n`;
     message += `  • Awarded Projects: ${sos.awarded}\n`;
     message += `  • Offer Submitted: ${sos.offer_submitted}\n\n`;
-    
+
     message += `🏭 DLE Results:\n`;
     message += `  • Total Projects: ${dle.total}\n`;
     message += `  • Awarded Projects: ${dle.awarded}\n`;
@@ -2002,7 +2021,7 @@ function testAwardedProjectsFix() {
     const dle = data.companies.DLE;
 
     let message = `🧪 Awarded Projects Analysis (${DASHBOARD_YEAR}):\n\n`;
-    
+
     message += `🏭 DLE Results (${DASHBOARD_YEAR}):\n`;
     message += `  • Total Projects: ${dle.total}\n`;
     message += `  • Awarded Projects: ${dle.awarded}\n`;
